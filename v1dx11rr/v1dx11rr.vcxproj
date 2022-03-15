@@ -157,6 +157,7 @@
     <ClCompile Include="XACT3Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Agua.h" />
     <ClInclude Include="Billboard.h" />
     <ClInclude Include="Camara.h" />
     <ClInclude Include="DXRR.h" />
@@ -174,6 +175,7 @@
     <Text Include="SkyDome.fx" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Awa.hlsl" />
     <FxCompile Include="Billboard.hlsl" />
     <FxCompile Include="Modelo.fx" />
   </ItemGroup>

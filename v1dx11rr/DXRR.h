@@ -56,6 +56,11 @@ public:
 	ModeloRR* martillo;
 	ModeloRR* pala;
 	ModeloRR* tierra;
+	ModeloRR* vehiculo;
+	ModeloRR* Iglesia;
+	ModeloRR* TumbaCons;
+
+
 
 
 
@@ -88,21 +93,27 @@ public:
 		arriaba = 0;
 		billCargaFuego();
 		camara = new Camara(D3DXVECTOR3(0,80,6), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0), Ancho, Alto);
-		terreno = new TerrenoRR(600, 600, d3dDevice, d3dContext);
-		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"SkyDome_night.png");
+		terreno = new TerrenoRR(900, 600, d3dDevice, d3dContext);
+		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg");
 		billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 5);
-		puerta = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PORTON.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, 0);
+		puerta = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PORTON.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		//model = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PORTON.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", 0, 0);
-		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", 0, 0);
-		puerta1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA1.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", 0, 0);
-		puerta2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA2.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", 0, 0);
-		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/lambert3_Base_Color.png", L"Assets/Lampara/lambert3_Roughness.png", 0, 0);
-		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", 0, 0);
-		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/tronco.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", 0, 0);
-		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", 0, 0);
-		lapida_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida2.obj", L"Assets/Lapidas/Lapida2_color.png", L"Assets/Lapidas/Lapida2_roughness.png", 0, 0);
-		lapida_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida3.obj", L"Assets/Lapidas/Lapida3_color.png", L"Assets/Lapidas/Lapida3_roughness.png", 0, 0);
-		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", 0, 0);
+		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", 0, -100);
+		puerta1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA1.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", 0, -100);
+		puerta2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA2.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", 0, -100);
+		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/lambert3_Base_Color.png", L"Assets/Lampara/lambert3_Roughness.png", 0, -100);
+		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", 0, -100);
+		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/tronco.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", 0, -100);
+		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", 0, -100);
+		lapida_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida2.obj", L"Assets/Lapidas/Lapida2_color.png", L"Assets/Lapidas/Lapida2_roughness.png", 0, -100);
+		lapida_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida3.obj", L"Assets/Lapidas/Lapida3_color.png", L"Assets/Lapidas/Lapida3_roughness.png", 0, -100);
+		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", 0, -100);
+		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", 0, -100);
+		pala = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);
+		/*tierra = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100); 
+		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);
+		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);  */
+		TumbaCons = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/Casita.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);
 
 	
 		
@@ -311,7 +322,12 @@ public:
 		lapida_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
 		lapida_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
 		lapida_4->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		
+		martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
+		pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
+		TumbaCons->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
+
+
+
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
