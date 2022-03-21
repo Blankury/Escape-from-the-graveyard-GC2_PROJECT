@@ -162,6 +162,7 @@
     <ClInclude Include="Camara.h" />
     <ClInclude Include="DXRR.h" />
     <ClInclude Include="GamePadRR.h" />
+    <ClInclude Include="lago.h" />
     <ClInclude Include="loadModel.h" />
     <ClInclude Include="ModeloRR.h" />
     <ClInclude Include="SkyDome.h" />
@@ -175,8 +176,12 @@
     <Text Include="SkyDome.fx" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Awa.hlsl" />
+    <FxCompile Include="Awa.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_Main</EntryPointName>
+    </FxCompile>
     <FxCompile Include="Billboard.hlsl" />
+    <FxCompile Include="Lago.hlsl" />
     <FxCompile Include="Modelo.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

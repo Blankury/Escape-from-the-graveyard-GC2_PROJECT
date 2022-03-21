@@ -46,6 +46,7 @@ private:
 
 	ID3D11ShaderResourceView* colorMap;
 	ID3D11ShaderResourceView* specMap;
+	ID3D11ShaderResourceView* bumpMap;
 	ID3D11SamplerState* colorMapSampler;
 
 	ID3D11Buffer* viewCB;
@@ -174,8 +175,12 @@ public:
 		D3D11_INPUT_ELEMENT_DESC solidColorLayout[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },			
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 1, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 2, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+
 		};
 
 		unsigned int totalLayoutElements = ARRAYSIZE(solidColorLayout);
@@ -212,6 +217,10 @@ public:
 
 		//aqui va la carga del modelo con el metodo creadoModelPath
 		m_ObjParser.LoadFile(ModelPath); //"Assets/Tent-Tower/Tienda-Top.obj"
+
+
+
+
 		//proceso de guardar el buffer de vertices para su uso en el render
 		D3D11_BUFFER_DESC vertexDesc;
 		ZeroMemory(&vertexDesc, sizeof(vertexDesc));
@@ -235,7 +244,7 @@ public:
 		//crea los accesos de las texturas para los shaders 
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, diffuseTex, 0, 0, &colorMap, 0);
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, specularTex, 0, 0, &specMap, 0);
-		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, normalTex, 0, 0, &specMap, 0);
+		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, normalTex, 0, 0, &bumpMap, 0);
 		if (FAILED(d3dResult))
 		{
 			return false;
@@ -351,6 +360,11 @@ public:
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 1, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 2, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+
+
 		};
 
 		unsigned int totalLayoutElements = ARRAYSIZE(solidColorLayout);
@@ -497,6 +511,8 @@ public:
 			colorMap->Release();
 		if (specMap)
 			specMap->Release();
+		if (bumpMap)
+			bumpMap->Release();
 		if (VertexShaderVS)
 			VertexShaderVS->Release();
 		if (solidColorPS)
@@ -521,6 +537,7 @@ public:
 		colorMapSampler = 0;
 		colorMap = 0;
 		specMap = 0;
+		bumpMap = 0;
 		VertexShaderVS = 0;
 		solidColorPS = 0;
 		inputLayout = 0;
@@ -535,7 +552,7 @@ public:
 
 	void Update(float dt)
 	{
-
+		
 	}
 
 	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale)
@@ -566,6 +583,7 @@ public:
 		//pasa lo sbuffers al shader
 		d3dContext->PSSetShaderResources(0, 1, &colorMap);	
 		d3dContext->PSSetShaderResources(1, 1, &specMap);
+		d3dContext->PSSetShaderResources(2, 1, &bumpMap);
 
 		d3dContext->PSSetSamplers(0, 1, &colorMapSampler);
 

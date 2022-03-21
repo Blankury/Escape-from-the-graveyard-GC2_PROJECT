@@ -50,6 +50,7 @@ PS_Input VS_Main(VS_Input vertex)
 
 	vsOut.tex0 = vertex.tex0;
 	vsOut.blendTex = vertex.blendTex;
+	
 	vsOut.normal = normalize(mul(vertex.normal, worldMatrix));
 	vsOut.tangent = normalize(mul(vertex.tangente, worldMatrix));
 	vsOut.binorm = normalize(mul(vertex.binormal, worldMatrix));

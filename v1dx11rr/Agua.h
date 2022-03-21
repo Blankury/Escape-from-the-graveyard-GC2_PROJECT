@@ -1,16 +1,11 @@
 #ifndef _Agua
 #define _Agua
 
-
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <DxErr.h>
 #include <D3Dcompiler.h>
 #include <d3dx10math.h>
-
-struct vector2 {
-	float u, v;
-};
 
 class AguaRR {
 public:
@@ -37,11 +32,14 @@ public:
 	ID3D11ShaderResourceView* colorMap;
 	ID3D11ShaderResourceView* normalMap;
 	ID3D11ShaderResourceView* dispMap;
+
 	ID3D11SamplerState* colorMapSampler;
 
 	ID3D11Buffer* viewCB;
 	ID3D11Buffer* projCB;
 	ID3D11Buffer* worldCB;
+	ID3D11Buffer* rotCB;
+	ID3D11Buffer* posCB;
 	D3DXMATRIX viewMatrix;
 	D3DXMATRIX projMatrix;
 
@@ -222,11 +220,25 @@ public:
 		delete vertices;
 
 		//creamos los indices para hacer el terreno
+
+
+
+
+
+
+
+
+
+
+
+
+
 		estableceIndices();
 		//crea los accesos de las texturas para los shaders 
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, billb, 0, 0, &colorMap, 0);
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, normal, 0, 0, &normalMap, 0);
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, disp, 0, 0, &dispMap, 0);
+
 
 		if (FAILED(d3dResult))
 		{
@@ -277,6 +289,20 @@ public:
 			return false;
 		}
 
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &rotCB);
+
+		if (FAILED(d3dResult))
+		{
+			return false;
+		}
+
+
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &posCB);
+
+		if (FAILED(d3dResult))
+		{
+			return false;
+		}
 
 		return true;
 	}
@@ -306,11 +332,13 @@ public:
 			projCB->Release();
 		if (worldCB)
 			worldCB->Release();
-
+		if (rotCB)
+			rotCB->Release();
 
 		colorMapSampler = 0;
 		colorMap = 0;
 		normalMap = 0;
+		dispMap = 0;
 		VertexShaderVS = 0;
 		solidColorPS = 0;
 		inputLay = 0;
@@ -319,56 +347,17 @@ public:
 		viewCB = 0;
 		projCB = 0;
 		worldCB = 0;
+		rotCB = 0;
 	}
 
 
-	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, D3DXVECTOR3 poscam, float xx, float zz, float posy, float escala, vector2* uv1, vector2* uv2, vector2* uv3, vector2* uv4, int frame)
+	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, D3DXVECTOR3 poscam, float posy, float escala)
 	{
-		posx = xx;
-		posz = zz;
-		vertices = new VertexComponent[4];
+		static float movimiento = 0.0f;
+		movimiento += 0.0025;
+		if (movimiento > 100)
+			movimiento = 0;
 
-		// Se calculan los vertices 'x' y 'z'. 'Y' se saca del mapa de normales
-		vertices[0].pos.x = 0;
-		vertices[0].pos.y = 0;
-		vertices[0].pos.z = -1 * escala;
-		vertices[0].UV.x = uv1[frame].u;
-		vertices[0].UV.y = uv1[frame].v;
-
-		vertices[1].pos.x = 0;
-		vertices[1].pos.y = 2 * escala;
-		vertices[1].pos.z = -1 * escala;
-		vertices[1].UV.x = uv2[frame].u;
-		vertices[1].UV.y = uv2[frame].v;
-
-		vertices[2].pos.x = 0;
-		vertices[2].pos.y = 2 * escala;
-		vertices[2].pos.z = 1 * escala;
-		vertices[2].UV.x = uv3[frame].u;
-		vertices[2].UV.y = uv3[frame].v;
-
-		vertices[3].pos.x = 0;
-		vertices[3].pos.y = 0;
-		vertices[3].pos.z = 1 * escala;
-		vertices[3].UV.x = uv4[frame].u;
-		vertices[3].UV.y = uv4[frame].v;
-
-		//proceso de guardar el buffer de vertices para su uso en el render
-		D3D11_BUFFER_DESC vertexDesc;
-		ZeroMemory(&vertexDesc, sizeof(vertexDesc));
-		vertexDesc.Usage = D3D11_USAGE_DEFAULT;
-		vertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		vertexDesc.ByteWidth = sizeof(VertexComponent) * 4;
-
-		D3D11_SUBRESOURCE_DATA resourceData;
-		ZeroMemory(&resourceData, sizeof(resourceData));
-		resourceData.pSysMem = vertices;
-
-		d3dDevice->CreateBuffer(&vertexDesc, &resourceData, &vertexBuffer);
-
-
-		//ya una vez pasados los vertices al buffer borramos el arreglo donde los habiamos creado inicialmente
-		delete vertices;
 
 
 		//paso de datos, es decir cuanto es el ancho de la estructura
@@ -391,6 +380,8 @@ public:
 		//pasa lo sbuffers al shader
 		d3dContext->PSSetShaderResources(0, 1, &colorMap);
 		d3dContext->PSSetShaderResources(1, 1, &normalMap);
+		d3dContext->PSSetShaderResources(2, 1, &dispMap);
+
 		d3dContext->PSSetSamplers(0, 1, &colorMapSampler);
 
 		//mueve la camara
@@ -414,10 +405,19 @@ public:
 		d3dContext->UpdateSubresource(worldCB, 0, 0, &worldMat, 0, 0);
 		d3dContext->UpdateSubresource(viewCB, 0, 0, &vista, 0, 0);
 		d3dContext->UpdateSubresource(projCB, 0, 0, &proyeccion, 0, 0);
+		d3dContext->UpdateSubresource(posCB, 0, 0, &poscam, 0, 0);
+
+		d3dContext->UpdateSubresource(worldCB, 0, 0, &worldMat, 0, 0);
+		d3dContext->UpdateSubresource(rotCB, 0, 0, &movimiento, 0, 0);
+
 		//le pasa al shader los buffers
 		d3dContext->VSSetConstantBuffers(0, 1, &worldCB);
 		d3dContext->VSSetConstantBuffers(1, 1, &viewCB);
 		d3dContext->VSSetConstantBuffers(2, 1, &projCB);
+		d3dContext->VSSetConstantBuffers(3, 1, &posCB);
+		d3dContext->VSSetConstantBuffers(0, 1, &worldCB);
+		d3dContext->VSSetConstantBuffers(4, 1, &rotCB);
+
 		//cantidad de trabajos
 
 		d3dContext->DrawIndexed(6, 0, 0);
