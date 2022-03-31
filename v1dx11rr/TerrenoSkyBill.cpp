@@ -192,6 +192,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
             if (keyboardData[DIK_B] & 0x80) {
                 dxrr->breakpoint = true;
             }
+            if (keyboardData[DIK_E] & 0x80) {
+                dxrr->tipoCam = 3;
+            }
+            if (keyboardData[DIK_R] & 0x80) {
+                dxrr->tipoCam = 1;
+            }
+
 
             if (keyboardData[DIK_ESCAPE] & 0x80) {
                 KillTimer(hWnd, 100);

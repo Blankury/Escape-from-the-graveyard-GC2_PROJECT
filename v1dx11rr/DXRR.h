@@ -12,10 +12,6 @@
 #include "lago.h"
 #include "XACT3Util.h"
 
-
-
-
-#include "Agua.h"
 class DXRR{	
 
 private:
@@ -46,9 +42,9 @@ public:
 	TerrenoRR *terreno;
 	SkyDome *skydome;
 	BillboardRR *billboard;
-	BillboardRR* billboard1;
-	BillboardRR* billboard2;
-	BillboardRR* billboard3;
+	BillboardRR* hojas;
+	BillboardRR* esqueleto;
+	BillboardRR* arbol;
 
 
 
@@ -67,14 +63,12 @@ public:
 	ModeloRR* tronco; 
 	ModeloRR* martillo;
 	ModeloRR* pala;
-	ModeloRR* tierra;
+	ModeloRR* tierra[16];
 	ModeloRR* vehiculo;
 	ModeloRR* Iglesia;
 	ModeloRR* TumbaCons;
 
-
-
-	AguaRR* agua;
+	int tierraCorrecta = rand() % 15;
 
 	float izqder;
 	float arriaba;
@@ -87,9 +81,14 @@ public:
 
 	XACTINDEX cueIndex;
 	CXACT3Util m_XACT3;
-	
+
+	float rotCam;
+	int tipoCam;
+
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
+		tipoCam = 1;
+		rotCam = 0;
 		breakpoint = false;
 		frameBillboard = 0;
 		ancho = Ancho;
@@ -104,26 +103,28 @@ public:
 		izqder = 0;
 		arriaba = 0;
 		billCargaFuego();
-		camara = new Camara(D3DXVECTOR3(0,80,6), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0), Ancho, Alto);
-
-		terreno = new TerrenoRR(900, 600, d3dDevice, d3dContext);
+		camara = new Camara(D3DXVECTOR3(0, 80, 6), D3DXVECTOR3(-0.65, 80, 0), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
+		terreno = new TerrenoRR(900, 900, d3dDevice, d3dContext);
 
 		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg");
-		//agua = new AguaRR(L"Water_001_COLOR.jpg", L"Water_001_NORM.jpg", L"Water_001_DISP.png", d3dDevice, d3dContext, 5);
+		
 		//AGUA
 		lago = new LagoRR(L"Water_001_COLOR.jpg", L"Water_001_NORM.jpg", L"Water_001_DISP.png", d3dDevice, d3dContext, 4);
 
 
 		//BILLBOARDS
 		billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 6);
-		
+		hojas = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+		esqueleto = new BillboardRR(L"Bill.png", L"Bill_normal.png", d3dDevice, d3dContext, 6);
+		arbol = new BillboardRR(L"Bill2.png", L"Bill2_normal.png", d3dDevice, d3dContext, 6);
+
 		
 		//MODELOS
 		puerta = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PORTON.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		puerta1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA1.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		puerta2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA2.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", L"Assets/Paredes/uigmaawg_2K_Normal.jpg", 0, -100);
-		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/lambert3_Base_Color.png", L"Assets/Lampara/lambert3_Roughness.png", L"Assets/Lampara/lambert3_Normal_OpenGL.png", 0, -100);
+		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lamparas.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
 		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", L"Assets/Jarron/lambert1_Normal.png", 0, -100);
 		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/tronco.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
 		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
@@ -132,12 +133,26 @@ public:
 		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", L"Assets/Lapidas/Lapida4_normal.png", 0, -100);
 		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", L"Assets/Martillo/SurvivalKit_Hammer_Normal.png", 0, -100);
 		pala = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
-		
-		
-		/*tierra = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);
-		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);
-		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", 0, -100);  */
+		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, -100);
+		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Iglesia/igl.obj", L"Assets/Iglesia/color.png", L"Assets/Iglesia/lambert8_Metallic.png", L"Assets/Iglesia/lambert8_Normal_OpenGL.png", 0, -100);
 		TumbaCons = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/Casita.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
+		//TIERRAS
+		tierra[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[2] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra2.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[3] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra3.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[4] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra4.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[5] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra5.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[6] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra6.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[7] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra7.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[8] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra8.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[9] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra9.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[10] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra10.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[11] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra11.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[12] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra12.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[13] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra13.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[14] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra14.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[15] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra15.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 
 		
 	}
@@ -306,6 +321,14 @@ public:
 	
 	void Render(void)
 	{
+		if (breakpoint) {
+			bool x = false;
+
+		}
+
+		rotCam += izqder;
+
+
 		float sphere[3] = { 0,0,0 };
 		float prevPos[3] = { camara->posCam.x, camara->posCam.z, camara->posCam.z };
 		static float angle = 0.0f;
@@ -318,8 +341,11 @@ public:
 		float clearColor[4] = { 0, 0, 0, 1.0f };
 		d3dContext->ClearRenderTargetView( backBufferTarget, clearColor );
 		d3dContext->ClearDepthStencilView( depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
-		camara->posCam.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 5 ;
-		camara->UpdateCam(vel, arriaba, izqder);
+		camara->posCam.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 16;
+		camara->posCam3p.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 20;
+
+		
+		camara->UpdateCam(vel, arriaba, izqder, tipoCam);
 		skydome->Update(camara->vista, camara->proyeccion);
 
 		float camPosXZ[2] = { camara->posCam.x, camara->posCam.z };
@@ -327,37 +353,69 @@ public:
 		TurnOffDepth();
 		skydome->Render(camara->posCam);
 		TurnOnDepth();
+
+
+		vehiculo->setPosX(camara->hdveo.x);
+		vehiculo->setPosZ(camara->hdveo.z);
+		vehiculo->Draw(camara->vista, camara->proyeccion,
+			terreno->Superficie(vehiculo->getPosX(), vehiculo->getPosZ()) + 2.5, camara->posCam, 10.0f, rotCam, 'Y', 1, true, tipoCam);
+
 		terreno->Draw(camara->vista, camara->proyeccion);
 
 
-		
+		//BILLBOARDS
 		billboard->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-11, -78, 4, 5, uv1, uv2, uv3, uv4, frameBillboard);
+		hojas->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			-11, -78, 14, 5, uv1, uv2, uv3, uv4, 1);
+		esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			-11, -78, 15, 5, uv1, uv2, uv3, uv4, 1);
+		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			-11, -78, 20, 5, uv1, uv2, uv3, uv4, 1);
 		
+		//AGUA
 		//TurnOnAlphaBlending();
-		
 		lago->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			185.5f, -71, 5.5, 30, uv1, uv2, uv3, uv4, 1, 1.57, 'Z');
 		//TurnOffAlphaBlending();
 		
-		////agua->Update(movimiento);
-		/*agua->Draw(camara->vista, camara->proyeccion, camara->posCam,
-			 4, 5);*/
+		//MODELOS
+		pared->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		puerta->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		jarron->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tronco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 250.0, 0, 'A', 1, false, tipoCam);
+		lapida_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		lapida_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		lapida_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		lapida_4->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		Iglesia->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
+		//TIERRAS
+		tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[1]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[2]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[3]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[4]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[5]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[6]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[7]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[8]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[9]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[10]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[11]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[12]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[13]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[14]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[15]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		tierra[16]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 
-		pared->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		puerta->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		jarron->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		tronco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 250.0, 0, 'A', 1);
-		lapida_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		lapida_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		lapida_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		lapida_4->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		TumbaCons->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
+		
+		
+		TumbaCons->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 
 
 		swapChain->Present( 1, 0 );

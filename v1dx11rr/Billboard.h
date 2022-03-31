@@ -420,7 +420,7 @@ public:
 
 
 	}
-
+	
 	void estableceIndices()
 	{
 		HRESULT d3dResult;

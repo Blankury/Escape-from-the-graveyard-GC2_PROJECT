@@ -11,6 +11,7 @@
 class Camara{
 public:
 	D3DXVECTOR3 posCam;
+	D3DXVECTOR3 posCam3p;
 	D3DXVECTOR3 hdveo;
 	D3DXVECTOR3 hdvoy;
 	D3DXVECTOR3 refUp;
@@ -25,6 +26,10 @@ public:
 	{
 		//posicion de la camara
 		posCam = eye;
+
+		posCam3p = eye;
+		posCam3p.z += 15;
+
 		//a donde ve
 		hdveo = target;
 		refUp = up;
@@ -49,7 +54,7 @@ public:
 		
 	}
 
-	D3DXMATRIX UpdateCam(float vel, float arriaba, float izqder)
+	D3DXMATRIX UpdateCam(float vel, float arriaba, float izqder, int tipoCam)
 	{
 		D3DXVECTOR4 tempo;
 		D3DXQUATERNION quatern; //quaternion temporal para la camara
@@ -84,8 +89,18 @@ public:
 
 		//ajustamos la matriz de vista con lo obtenido
 		posCam += refFront * vel/10.0;
-		hdveo = posCam + refFront;
-		D3DXMatrixLookAtLH(&vista, &posCam, &hdveo, &refUp);
+		posCam3p += refFront * vel / 10.0;
+
+		if (tipoCam == 1)
+		{
+			hdveo = posCam + refFront;
+			D3DXMatrixLookAtLH(&vista, &posCam, &hdveo, &refUp);
+		}
+		else {
+			hdveo = posCam3p + refFront;
+			D3DXMatrixLookAtLH(&vista, &posCam3p, &hdveo, &refUp);
+		}
+		
 		D3DXMatrixTranspose( &vista, &vista );
 		return vista;
 	}

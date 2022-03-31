@@ -115,6 +115,15 @@ public:
 		return this->posZ;
 	}
 
+	void setPosX(float posX) {
+		this->posX = posX;
+	}
+
+	void setPosZ(float posZ) {
+		this->posZ = posZ;
+	}
+
+
 	bool CompileD3DShader(WCHAR* filePath, char* entry, char* shaderModel, ID3DBlob** buffer)
 	{
 		//forma de compilar el shader
@@ -555,7 +564,7 @@ public:
 		
 	}
 
-	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale)
+	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale, bool movCam, int tipoCam)
 	{
 		static float rotation = 0.0f;
 		rotation += 0.01;
@@ -588,22 +597,41 @@ public:
 		d3dContext->PSSetSamplers(0, 1, &colorMapSampler);
 
 		//mueve la camara
+		D3DXMATRIX traslacionDelaCamara;
+		if (tipoCam == 1) {
+			D3DXMatrixTranslation(&traslacionDelaCamara, 0.0, 0.0, -2.0);
+		}
+		else {
+			D3DXMatrixTranslation(&traslacionDelaCamara, 0.0, 0.0, -25.0);
+		}
+		
+
 		D3DXMATRIX rotationMat;
 		D3DXMatrixRotationYawPitchRoll(&rotationMat, 0.0f, 0.0f, 0.0f);
-		D3DXMATRIX translationMat;
-		D3DXMatrixTranslation(&translationMat, posX, ypos, posZ);
-		if(angle == 'X')
+		
+		if (angle == 'X')
 			D3DXMatrixRotationX(&rotationMat, rot);
 		else if (angle == 'Y')
 			D3DXMatrixRotationY(&rotationMat, rot);
 		else if (angle == 'Z')
 			D3DXMatrixRotationZ(&rotationMat, rot);
 		viewMatrix *= rotationMat;
+		
+		D3DXMATRIX translationMat;
+		D3DXMatrixTranslation(&translationMat, posX, ypos, posZ);
+		
 
 		D3DXMATRIX scaleMat;
-		D3DXMatrixScaling(&scaleMat, scale,scale,scale);
+		D3DXMatrixScaling(&scaleMat, scale,scale *1.5,scale);
 
-		D3DXMATRIX worldMat = rotationMat * scaleMat * translationMat;
+		D3DXMATRIX worldMat;
+		if (movCam) {
+			worldMat = scaleMat * traslacionDelaCamara * rotationMat * translationMat;
+		}
+		else {
+			worldMat = scaleMat* rotationMat * translationMat;
+		}
+		
 		D3DXMatrixTranspose(&worldMat, &worldMat);
 		//actualiza los buffers del shader
 		d3dContext->UpdateSubresource(worldCB, 0, 0, &worldMat, 0, 0);
