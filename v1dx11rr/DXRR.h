@@ -67,7 +67,9 @@ public:
 	ModeloRR* vehiculo;
 	ModeloRR* Iglesia;
 	ModeloRR* TumbaCons;
+	ModeloRR* arbolseco;
 
+	ModeloRR* jugador;
 	int tierraCorrecta = rand() % 15;
 
 	float izqder;
@@ -124,18 +126,20 @@ public:
 		puerta1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA1.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		puerta2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/PUERTA2.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", L"Assets/Paredes/uigmaawg_2K_Normal.jpg", 0, -100);
-		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lamparas.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
+		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
 		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", L"Assets/Jarron/lambert1_Normal.png", 0, -100);
-		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/tronco.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
+		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/troncos.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
 		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
 		lapida_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida2.obj", L"Assets/Lapidas/Lapida2_color.png", L"Assets/Lapidas/Lapida2_roughness.png", L"Assets/Lapidas/Lapida2_normal.png", 0, -100);
 		lapida_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida3.obj", L"Assets/Lapidas/Lapida3_color.png", L"Assets/Lapidas/Lapida3_roughness.png", L"Assets/Lapidas/Lapida3_normal.png", 0, -100);
 		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", L"Assets/Lapidas/Lapida4_normal.png", 0, -100);
-		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", L"Assets/Martillo/SurvivalKit_Hammer_Normal.png", 0, -100);
+		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo_mov.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", L"Assets/Martillo/SurvivalKit_Hammer_Normal.png", 0, -100);
 		pala = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
-		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, -100);
-		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Iglesia/igl.obj", L"Assets/Iglesia/color.png", L"Assets/Iglesia/lambert8_Metallic.png", L"Assets/Iglesia/lambert8_Normal_OpenGL.png", 0, -100);
-		TumbaCons = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/Casita.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
+		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, -140);
+		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Iglesia/igl.obj", L"Assets/Iglesia/chapel_diffuse.png", L"Assets/Iglesia/chapel_spec.png", L"Assets/Iglesia/chapel_normal.png", 0, -100);
+		TumbaCons = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/Untitled.obj", L"Assets/Casita/mesh_u1_v1.png", L"Assets/Casita/mesh_u1_v1_specular.png", L"Assets/Casita/normal.png", 0, -100);
+		arbolseco = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/arbol.obj", L"Assets/Arbol/tree_DefaultMaterial_BaseColor.png", L"Assets/Arbol/tree_DefaultMaterial_Roughness.png", L"Assets/Arbol/tree_DefaultMaterial_Normal.png", 0, -100);
+
 		//TIERRAS
 		tierra[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
@@ -394,6 +398,7 @@ public:
 		martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		Iglesia->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
+		arbolseco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		//TIERRAS
 		tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		tierra[1]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
@@ -415,7 +420,7 @@ public:
 
 		
 		
-		TumbaCons->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		//TumbaCons->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 
 
 		swapChain->Present( 1, 0 );

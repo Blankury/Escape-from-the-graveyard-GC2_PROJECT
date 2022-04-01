@@ -216,24 +216,30 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
             if (gamePad->IsConnected())
             {
 
+                dxrr->izqder = 0;
+                dxrr->arriaba = 0;
 
-                float grados = (float)gamePad->GetState().Gamepad.sThumbRX / 32767.0;
+                float gradosX = (float)gamePad->GetState().Gamepad.sThumbRX / 32767.0;
+                float gradosY = (float)gamePad->GetState().Gamepad.sThumbRY / 32767.0;
+                float sensibilidad = 20.0; //1.0
+                float rango = 0.70; //0.9
 
-                if (grados > 0.19 || grados < -0.19) dxrr->izqder = grados / 15;
+                if (gradosX > rango || gradosX<-rango || gradosY>rango || gradosY < -rango) {
 
-                grados = (float)gamePad->GetState().Gamepad.sThumbRY / 32767.0;
+                    dxrr->izqder += gradosX / sensibilidad;
+                    dxrr->arriaba += gradosY / sensibilidad;
 
-                if (grados > 0.19 || grados < -0.19)dxrr->arriaba = grados / 15;
+                }
 
+                float velocidadZ = (float)gamePad->GetState().Gamepad.sThumbLY / 32767.0;
+                float velocidadX = -(float)gamePad->GetState().Gamepad.sThumbLX / 32767.0;
+                float velocidad = 5.0f;
 
-                float velocidad = (float)gamePad->GetState().Gamepad.sThumbLY / 32767.0;
-                if (velocidad > 0.19 || velocidad < -0.19) {
-                    if (gamePad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-                        velocidad *= 14.5;
-                    else if (gamePad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) velocidad /= 3;
-                    else velocidad *= 2.5;
-                    if (velocidad > 0.19) dxrr->vel = velocidad;
-                    else if (velocidad < -0.19) dxrr->vel = velocidad;
+                if (velocidadZ > rango || velocidadZ <-rango || velocidadX > rango || velocidadX < -rango) {
+
+                    dxrr->vel = velocidadZ * velocidad;
+                    dxrr->vel = velocidadX * velocidad;
+
                 }
 
             }
