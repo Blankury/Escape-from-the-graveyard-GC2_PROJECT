@@ -199,6 +199,8 @@ public:
 		vertices[3].UV.x = 1;
 		vertices[3].UV.y = 1;
 
+
+
 		//proceso de guardar el buffer de vertices para su uso en el render
 		D3D11_BUFFER_DESC vertexDesc;
 		ZeroMemory(&vertexDesc, sizeof(vertexDesc));
@@ -337,16 +339,15 @@ public:
 
 
 	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, D3DXVECTOR3 poscam, float xx, float zz, float posy,
-		float escala, vector2* uv1, vector2* uv2, vector2* uv3, vector2* uv4, int frame, float rot, char angler)
+		float escala, vector2* uv1, vector2* uv2, vector2* uv3, vector2* uv4, float rot, char angler)
 	{
 
 
-		static float movimiento = 0.0f;
-		movimiento += 0.0025;
-		if (movimiento > 100)
-			movimiento = 0;
+		static float movimiento = 0.01;
+		movimiento += 0.0005;
 
 
+			
 		posx = xx;
 		posz = zz;
 		vertices = new VertexComponent[4];
@@ -355,26 +356,27 @@ public:
 		vertices[0].pos.x = 0;
 		vertices[0].pos.y = 0;
 		vertices[0].pos.z = -1 * escala;
-		vertices[0].UV.x = uv1[frame].u;
-		vertices[0].UV.y = uv1[frame].v;
+		vertices[0].UV.x = 0;
+		vertices[0].UV.y = 1;
 
 		vertices[1].pos.x = 0;
 		vertices[1].pos.y = 2 * escala;
 		vertices[1].pos.z = -1 * escala;
-		vertices[1].UV.x = uv2[frame].u;
-		vertices[1].UV.y = uv2[frame].v;
+		vertices[1].UV.x = 0;
+		vertices[1].UV.y = 0;
 
 		vertices[2].pos.x = 0;
 		vertices[2].pos.y = 2 * escala;
 		vertices[2].pos.z = 1 * escala;
-		vertices[2].UV.x = uv3[frame].u;
-		vertices[2].UV.y = uv3[frame].v;
+		vertices[2].UV.x = 1;
+		vertices[2].UV.y = 0;
 
 		vertices[3].pos.x = 0;
 		vertices[3].pos.y = 0;
 		vertices[3].pos.z = 1 * escala;
-		vertices[3].UV.x = uv4[frame].u;
-		vertices[3].UV.y = uv4[frame].v;
+		vertices[3].UV.x = 1;
+		vertices[3].UV.y = 1;
+
 
 		//proceso de guardar el buffer de vertices para su uso en el render
 		D3D11_BUFFER_DESC vertexDesc;
@@ -455,6 +457,10 @@ public:
 		d3dContext->VSSetConstantBuffers(2, 1, &projCB);
 		d3dContext->VSSetConstantBuffers(3, 1, &rotCB);
 		d3dContext->VSSetConstantBuffers(4, 1, &movCB);
+
+
+
+
 		//cantidad de trabajos
 
 		d3dContext->DrawIndexed(6, 0, 0);

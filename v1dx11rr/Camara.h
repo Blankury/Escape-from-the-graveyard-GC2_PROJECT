@@ -22,6 +22,15 @@ public:
 	int ancho;
 	int alto;
 
+	D3DXVECTOR3 posCampast;
+
+	float pos[2];
+	float* getpos() {
+		pos[0] = posCam.x;
+		pos[1] = posCam.z;
+		return pos;
+	}
+
 	Camara(D3DXVECTOR3 eye, D3DXVECTOR3 target, D3DXVECTOR3 up, int Ancho, int Alto)
 	{
 		//posicion de la camara
@@ -56,6 +65,9 @@ public:
 
 	D3DXMATRIX UpdateCam(float vel, float arriaba, float izqder, int tipoCam)
 	{
+
+		posCampast = posCam;
+
 		D3DXVECTOR4 tempo;
 		D3DXQUATERNION quatern; //quaternion temporal para la camara
 		D3DXMATRIX giraUp, giraRight; //matrices temporales para los giros
