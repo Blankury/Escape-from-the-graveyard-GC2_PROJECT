@@ -108,7 +108,7 @@ public:
 			hdveo = posCam + refFront;
 			D3DXMatrixLookAtLH(&vista, &posCam, &hdveo, &refUp);
 		}
-		else {
+		else if(tipoCam == 3) {
 			hdveo = posCam3p + refFront;
 			D3DXMatrixLookAtLH(&vista, &posCam3p, &hdveo, &refUp);
 		}

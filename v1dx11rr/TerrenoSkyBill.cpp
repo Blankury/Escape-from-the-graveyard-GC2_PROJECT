@@ -200,7 +200,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
             }
             //recoger
             if (keyboardData[DIK_Q] & 0x80) {
-
+                dxrr->postierr = true;
             }
             //accion
             if (keyboardData[DIK_X] & 0x80) {

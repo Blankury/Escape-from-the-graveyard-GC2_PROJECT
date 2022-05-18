@@ -611,10 +611,10 @@ public:
 		//mueve la camara
 		D3DXMATRIX traslacionDelaCamara;
 		if (tipoCam == 1) {
-			D3DXMatrixTranslation(&traslacionDelaCamara, 0.0, 0.0, -5.0);
+			D3DXMatrixTranslation(&traslacionDelaCamara, 1.2, 0.0, -2.0);
 		}
-		else {
-			D3DXMatrixTranslation(&traslacionDelaCamara, 0.0, 0.0, -25.0);
+		else if (tipoCam == 3) {
+			D3DXMatrixTranslation(&traslacionDelaCamara, 3.0, 0.0, -25.0);
 		}
 		
 

@@ -44,7 +44,7 @@ public:
 	TerrenoRR *terreno;
 	SkyDome *skydome;
 	BillboardRR *billboard;
-	BillboardRR* hojas;
+	BillboardRR* hojas, *hojas1, *hojas2, * hojas3, * hojas4;
 	BillboardRR* esqueleto;
 	BillboardRR *arbol, *arbol1, *arbol2, *arbol3, *arbol4, *arbol5, *arbol6, *arbol7;
 
@@ -60,6 +60,7 @@ public:
 	ModeloRR* puerta2;
 	ModeloRR* puertaA;
 	ModeloRR* lampara;
+	ModeloRR* LUZlampara;
 	ModeloRR* jarron;
 	ModeloRR* lapida_1;
 	ModeloRR* lapida_2;
@@ -69,10 +70,10 @@ public:
 	ModeloRR* martillo;
 	ModeloRR* pala;
 	ModeloRR* tierra[16];
-	ModeloRR* vehiculo;
 	ModeloRR* Iglesia;
 	ModeloRR* Casa;
 	ModeloRR* arbolseco;
+	ModeloRR* bike;
 
 	ModeloRR* jugador;
 	int tierraCorrecta = rand() % 15;
@@ -95,16 +96,19 @@ public:
 	int tipoCam;
 
 	///////Jugabilidad
-	bool Hacha = false;
+	bool entro = false;
 	bool Martillo = false;
 	bool Pala = false;
+	bool huesos = false;
 	bool Abierta_Cerrada = false;
+	bool excavada[16] = { false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false, };
+	bool postierr = false;
 
 
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
-		tipoCam = 1;
 		rotCam = 0;
+		tipoCam = 1;
 		breakpoint = false;
 		frameBillboard = 0;
 		ancho = Ancho;
@@ -119,7 +123,7 @@ public:
 		izqder = 0;
 		arriaba = 0;
 		billCargaFuego();
-		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(-0.65, 80, 0), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
+		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(2, 80, -10), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
 		terreno = new TerrenoRR(900, 900, d3dDevice, d3dContext);
 
 		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg");
@@ -131,6 +135,11 @@ public:
 		//BILLBOARDS
 		billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 6);
 		hojas = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+		hojas1 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+		hojas2 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+		hojas3 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+		hojas4 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
+
 		esqueleto = new BillboardRR(L"Bill.png", L"Bill_normal.png", d3dDevice, d3dContext, 6);
 		arbol = new BillboardRR(L"Bill1.png", L"Bill1_normal.png", d3dDevice, d3dContext, 6);
 		arbol1 = new BillboardRR(L"Bill1.png", L"Bill1_normal.png", d3dDevice, d3dContext, 6);
@@ -148,6 +157,7 @@ public:
 		puertaA = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/ABIERTA.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", L"Assets/Paredes/uigmaawg_2K_Normal.jpg", 0, -100);
 		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
+		LUZlampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Vidrio.obj", L"Assets/Lampara/glass_BaseColor.png", L"Assets/Lampara/glass_Roughness.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
 		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", L"Assets/Jarron/lambert1_Normal.png", 0, -100);
 		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/troncos.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
 		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
@@ -156,12 +166,12 @@ public:
 		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", L"Assets/Lapidas/Lapida4_normal.png", 0, -100);
 		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo_mov.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", L"Assets/Martillo/SurvivalKit_Hammer_Normal.png", 0, -100);
 		pala = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
-		vehiculo = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, -140);
 		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Iglesia/igl.obj", L"Assets/Iglesia/chapel_diffuse.png", L"Assets/Iglesia/chapel_spec.png", L"Assets/Iglesia/chapel_normal.png", 0, -100);
 		arbolseco = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/arbol.obj", L"Assets/Arbol/tree_DefaultMaterial_BaseColor.png", L"Assets/Arbol/tree_DefaultMaterial_Roughness.png", L"Assets/Arbol/tree_DefaultMaterial_Normal.png", 0, -100);
 		Casa = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/casa.obj", L"Assets/Casita/Diffuse.png", L"Assets/Casita/Diffuse.png", L"Assets/Casita/normal.png", 0, -100);
 
 		//TIERRAS
+
 		tierra[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[2] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra2.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
@@ -179,7 +189,8 @@ public:
 		tierra[14] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra14.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[15] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra15.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 
-		
+		bike = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, 0);
+
 	}
 
 	~DXRR()
@@ -370,8 +381,6 @@ public:
 
 		rotCam += izqder;
 
-		//pared de atras 125.72>
-
 		float sphere[3] = { 0,0,0 };
 		float prevPos[3] = { camara->posCam.x, camara->posCam.z, camara->posCam.z };
 		static float angle = 0.0f;
@@ -384,7 +393,7 @@ public:
 		float clearColor[4] = { 0, 0, 0, 1.0f };
 		d3dContext->ClearRenderTargetView(backBufferTarget, clearColor);
 		d3dContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-		camara->posCam.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 16;
+		camara->posCam.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 17;
 		camara->posCam3p.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 20;
 		camara->UpdateCam(vel, arriaba, izqder, tipoCam);
 
@@ -403,73 +412,180 @@ public:
 			camara->posCam = camara->posCampast;
 		}*/
 		//COLLISIONS
-		if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
-			if (!(camara->posCam.x < 10.8 && camara->posCam.x > -8)) {
-				camara->posCam = camara->posCampast;
+
+		if (entro)
+		{
+			if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
+					camara->posCam = camara->posCampast;
 			}
 		}
+		else
+		{
+			if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
+				if (!(camara->posCam.x < 10.8 && camara->posCam.x > -8)) {
+					camara->posCam = camara->posCampast;
+				}
+			}
+		}
+		
 		#pragma region COLLISIONS
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 207.21, 103.3))) {
-			camara->posCam = camara->posCampast;
-		}
+		
 
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.45, -20.5))) {
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 123.1, -24.9))) {
 			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 186.20, -24.4))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 28.1, -88.2))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.9, 20.22))) {
-			camara->posCam = camara->posCampast;
+		}//Tumba1
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 123.1, -24.9))) {
+				excavada[0] = true;
+				postierr = false;
+			}
 		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 155.4, -25.5))) {
 			camara->posCam = camara->posCampast;
+		}//Tumba2
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 155.4, -25.5))) {
+				excavada[1] = true;
+				postierr = false;
+			}
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 123.1, -24.9))) {
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 186.20, -24.4))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba3
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 186.20, -24.4))) {
+				excavada[2] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.45, -20.5))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba4
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 215.45, -20.5))) {
+				excavada[3] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.1, 24.53))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba5
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.1, 24.53))) {
+				excavada[4] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.4, 22.23))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba6
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 152.4, 22.23))) {
+				excavada[5] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.9, 62.0))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba7
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 185.9, 62.0))) {
+				excavada[6] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.9, 20.22))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba8
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 216.9, 20.22))) {
+				excavada[7] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.6, 58.5))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba9
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.6, 58.5))) {
+				excavada[8] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 154.79, 59.28))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba10
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 154.79, 59.28))) {
+				excavada[9] = true;
+				postierr = false;
+			}
+		}
+
+
+
+
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.3, 62.6))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba12
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 215.3, 62.6))) {
+				excavada[11] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.5, 89.3))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba13
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.5, 89.3))) {
+				excavada[12] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.3, 87.7))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba14
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 152.3, 87.7))) {
+				excavada[13] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 184.2, 90.46))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba15
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 184.2, 90.46))) {
+				excavada[14] = true;
+				postierr = false;
+			}
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 218.0, 92.2))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba16
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 218.0, 92.2))) {
+				excavada[15] = true;
+				postierr = false;
+			}
+		}
+
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 28.1, -88.2))) {
 			camara->posCam = camara->posCampast;
 		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.8, 27.9))) {
 			camara->posCam = camara->posCampast;
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.6, 58.5))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.1, 24.53))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.4, 22.23))) {
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 207.21, 103.3))) {
 			camara->posCam = camara->posCampast;
 		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.5, 23.1))) {
 			camara->posCam = camara->posCampast;
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 184.2, 90.46))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 218.0, 92.2))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.3, 62.6))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.9, 62.0))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 154.79, 59.28))) {
-			camara->posCam = camara->posCampast;
-		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 211.6, -72.5))) {
 			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.5, 89.3))) {
-			camara->posCam = camara->posCampast;
-		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.3, 87.7))) {
-			camara->posCam = camara->posCampast;
-		}
+		}		
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 44.5, -79.15))) {
 			camara->posCam = camara->posCampast;
 		}
@@ -511,6 +627,17 @@ public:
 		}
 #pragma endregion 
 
+
+
+
+		//JUGABILIDAD
+		if (camara->posCam.z > -87.0) {
+			entro = true;
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(7, 255.5, 117.6))) {
+
+		}
+
 		skydome->Update(camara->vista, camara->proyeccion);
 
 		float camPosXZ[2] = { camara->posCam.x, camara->posCam.z };
@@ -520,20 +647,16 @@ public:
 		TurnOnDepth();
 
 
-		vehiculo->setPosX(camara->hdveo.x);
-		vehiculo->setPosZ(camara->hdveo.z);
-		vehiculo->Draw(camara->vista, camara->proyeccion,
-			terreno->Superficie(vehiculo->getPosX(), vehiculo->getPosZ()) + 2.5,
-			camara->posCam, 10.0f, rotCam, 'Y', 1, true, tipoCam);
+		bike->setPosX(camara->hdveo.x);
+		bike->setPosZ(camara->hdveo.z);
+		bike->Draw(camara->vista, camara->proyeccion,
+			terreno->Superficie(bike->getPosX(), bike->getPosZ()) + 2.5,
+			camara->posCam, 10.0f, rotCam + XM_PI, 'Y', 1, true, tipoCam);
 
 		terreno->Draw(camara->vista, camara->proyeccion);
 
 
 		//BILLBOARDS
-		billboard->Draw(camara->vista, camara->proyeccion, camara->posCam,
-			-11, -78, 4, 5, uv1, uv2, uv3, uv4, frameBillboard, true, 0, 'A');
-		
-	
 		static float zzz = 0;
 		zzz += 0.01;
 		esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
@@ -568,10 +691,16 @@ public:
 		//MODELOS
 		pared->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		puerta->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		puertaA->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		if(entro == false) {
+			puertaA->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		else {
+			puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+			puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		
 		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		LUZlampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		jarron->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		tronco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 250.0, 0, 'A', 1, false, tipoCam);
 		lapida_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
@@ -584,24 +713,55 @@ public:
 		Casa->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		arbolseco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		//TIERRAS
-		tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[1]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[2]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[3]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[4]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[5]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[6]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[7]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[8]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[9]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[10]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[11]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[12]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[13]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[14]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[15]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		tierra[16]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 
+		if (excavada[0] == false) {
+			tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[1] == false) {
+			tierra[1]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[2] == false) {
+			tierra[2]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[3] == false) {
+			tierra[3]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[4] == false) {
+			tierra[4]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[5] == false) {
+			tierra[5]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[6] == false) {
+			tierra[6]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[7] == false) {
+			tierra[7]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[8] == false) {
+			tierra[8]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[9] == false) {
+			tierra[9]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[10] == false) {
+			tierra[10]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[11] == false) {
+			tierra[11]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[12] == false) {
+			tierra[12]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[13] == false) {
+			tierra[13]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[14] == false) {
+			tierra[14]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		if (excavada[15] == false) {
+			tierra[15]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
 		swapChain->Present( 1, 0 );
 	}
 

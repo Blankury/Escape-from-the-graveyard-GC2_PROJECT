@@ -1,3 +1,14 @@
+newmtl Chapel_Mat_
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.10 0.10 0.10
+Tf 1.00 1.00 1.00
+map_Kd chapel_diffuse.tga
+bump  -bm 0 chapel_normal.tga
+Ni 1.50
+Ks 0.00 0.00 0.00
+map_Ks chapel_spec.tga
+Ns 0.06
 newmtl aiStandardSurface1SG
 illum 4
 Kd 0.00 0.00 0.00
@@ -28,12 +39,6 @@ Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 0.00
-newmtl aiStandardSurface6SG
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 0.00
 newmtl aiStandardSurface8SG
 illum 4
 Kd 0.00 0.00 0.00
@@ -52,6 +57,26 @@ Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 0.00
+newmtl aiStandardSurface13SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 0.00
+newmtl aiStandardSurface14SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 0.00
+newmtl blinn1SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Diffuse.png
+Ni 1.00
+Ks 0.50 0.50 0.50
 newmtl initialShadingGroup
 illum 4
 Kd 0.50 0.50 0.50
@@ -70,3 +95,30 @@ Kd 1.00 1.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
+newmtl lambert8SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl lambert17SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl mesh_Material_u1_v1
+illum 4
+Kd 0.80 0.80 0.80
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl rp_nathan_animated_003_walking_geoSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd rp_nathan_animated_003_dif.jpg
+Ni 1.00
+Ks 0.03 0.03 0.03
+Ns 0.00
