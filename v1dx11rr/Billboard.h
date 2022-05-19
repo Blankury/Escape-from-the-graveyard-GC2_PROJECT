@@ -544,10 +544,9 @@ public:
 		D3DXMATRIX translationMat;
 		D3DXMatrixTranslation(&translationMat, posx, posy, posz);
 
-			D3DXMatrixRotationZ(&rotationMat, rot);
-
-			D3DXMatrixRotationY(&rotationMat, rot);
-
+		//rotacion
+		D3DXMatrixRotationYawPitchRoll(&rotationMat, rot, 0, rot);
+			
 		viewMatrix *= rotationMat;
 
 		D3DXMATRIX worldMat = rotationMat * translationMat;

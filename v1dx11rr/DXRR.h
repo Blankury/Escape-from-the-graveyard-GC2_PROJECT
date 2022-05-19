@@ -126,7 +126,7 @@ public:
 		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(2, 80, -10), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
 		terreno = new TerrenoRR(900, 900, d3dDevice, d3dContext);
 
-		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg");
+		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg", L"skydome_1.jpg");
 		
 		//AGUA
 		lago = new LagoRR(L"Water_001_COLOR.jpg", L"Water_001_NORM.jpg", L"Water_001_DISP.png", d3dDevice, d3dContext, 4);
@@ -430,11 +430,14 @@ public:
 		
 		#pragma region COLLISIONS
 		
+		if (isPointInsideSphere(camara->getpos3(), getSphere2(5, 123.1, -24.9))) {
+			camara->posCam = camara->posCampast;
 
+		}//Tumba1
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 123.1, -24.9))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba1
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 123.1, -24.9))) {
 				excavada[0] = true;
 				postierr = false;
@@ -443,7 +446,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 155.4, -25.5))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba2
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 155.4, -25.5))) {
 				excavada[1] = true;
 				postierr = false;
@@ -452,7 +455,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 186.20, -24.4))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba3
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 186.20, -24.4))) {
 				excavada[2] = true;
 				postierr = false;
@@ -461,7 +464,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.45, -20.5))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba4
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 215.45, -20.5))) {
 				excavada[3] = true;
 				postierr = false;
@@ -470,7 +473,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.1, 24.53))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba5
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.1, 24.53))) {
 				excavada[4] = true;
 				postierr = false;
@@ -479,7 +482,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.4, 22.23))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba6
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 152.4, 22.23))) {
 				excavada[5] = true;
 				postierr = false;
@@ -488,7 +491,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.9, 62.0))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba7
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 185.9, 62.0))) {
 				excavada[6] = true;
 				postierr = false;
@@ -497,7 +500,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.9, 20.22))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba8
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 216.9, 20.22))) {
 				excavada[7] = true;
 				postierr = false;
@@ -506,7 +509,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.6, 58.5))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba9
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.6, 58.5))) {
 				excavada[8] = true;
 				postierr = false;
@@ -515,7 +518,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 154.79, 59.28))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba10
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 154.79, 59.28))) {
 				excavada[9] = true;
 				postierr = false;
@@ -528,7 +531,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.3, 62.6))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba12
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 215.3, 62.6))) {
 				excavada[11] = true;
 				postierr = false;
@@ -537,7 +540,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 121.5, 89.3))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba13
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 121.5, 89.3))) {
 				excavada[12] = true;
 				postierr = false;
@@ -546,7 +549,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 152.3, 87.7))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba14
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 152.3, 87.7))) {
 				excavada[13] = true;
 				postierr = false;
@@ -555,7 +558,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 184.2, 90.46))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba15
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 184.2, 90.46))) {
 				excavada[14] = true;
 				postierr = false;
@@ -564,7 +567,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 218.0, 92.2))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba16
-		if (postierr == true) {
+		if (postierr == true && Pala == true) {
 			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 218.0, 92.2))) {
 				excavada[15] = true;
 				postierr = false;
@@ -627,17 +630,29 @@ public:
 		}
 #pragma endregion 
 
-
-
-
 		//JUGABILIDAD
 		if (camara->posCam.z > -87.0) {
 			entro = true;
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(7, 255.5, 117.6))) {
-
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 255.5, 117.6))) {
+				Pala = true;
+				postierr = false;
+			}
 		}
-
+		if (postierr == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(8, 131.3, 114.10))) {
+				Martillo = true;
+				postierr = false;
+			}
+		}
+		if (postierr == true && Martillo == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(8, 6.21, -86.84))) {
+				Martillo = true;
+				postierr = false;
+				entro =false;
+			}
+		}
 		skydome->Update(camara->vista, camara->proyeccion);
 
 		float camPosXZ[2] = { camara->posCam.x, camara->posCam.z };
@@ -657,15 +672,20 @@ public:
 
 
 		//BILLBOARDS
-		static float zzz = 0;
-		zzz += 0.01;
+
 		esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
-			-11, -78, 6, 12, uv1, uv2, uv3, uv4, 1, false, zzz);
+			-11, -78, 4, 12, uv1, uv2, uv3, uv4, 1, false, 1.57);
 
 		hojas->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			110, -78, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');  
-
-
+		hojas1->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			-54.3, -58.2, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		hojas2->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			79, 119, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		hojas3->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			224, -55.1, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		hojas4->Draw(camara->vista, camara->proyeccion, camara->posCam,
+			-106, -7.8, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
 		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-100, -78, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');
 		arbol1->Draw(camara->vista, camara->proyeccion, camara->posCam,
@@ -698,7 +718,6 @@ public:
 			puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 			puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
-		
 		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		LUZlampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		jarron->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
@@ -707,13 +726,22 @@ public:
 		lapida_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		lapida_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		lapida_4->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
-		pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		if (Martillo == false) {
+			martillo->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		else {
+			//No se dibuja el martillo
+		}
+		if (Pala == false) {
+			pala->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		}
+		else {
+			//No se dibuja la pala
+		}
 		Iglesia->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		Casa->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		arbolseco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		//TIERRAS
-
 		if (excavada[0] == false) {
 			tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
@@ -762,6 +790,9 @@ public:
 		if (excavada[15] == false) {
 			tierra[15]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
+
+		postierr = false;
+
 		swapChain->Present( 1, 0 );
 	}
 

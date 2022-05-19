@@ -25,12 +25,18 @@ public:
 	D3DXVECTOR3 posCampast;
 
 	float pos[2];
+	float pos2[2];
+
 	float* getpos() {
 		pos[0] = posCam.x;
 		pos[1] = posCam.z;
 		return pos;
 	}
-
+	float* getpos3() {
+		pos2[0] = posCam3p.x;
+		pos2[1] = posCam3p.z;
+		return pos2;
+	}
 	Camara(D3DXVECTOR3 eye, D3DXVECTOR3 target, D3DXVECTOR3 up, int Ancho, int Alto)
 	{
 		//posicion de la camara

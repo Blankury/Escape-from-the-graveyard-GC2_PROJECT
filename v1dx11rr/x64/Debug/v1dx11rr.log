@@ -57,14 +57,16 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\shared\winerror.h(54
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\d3d10.h(609,1): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND': redefinición de macro
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.16299.0\shared\winerror.h(54103): message : vea la definición anterior de 'D3D10_ERROR_FILE_NOT_FOUND'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(212,85): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(334,63): warning C4244: 'argumento': conversión de 'int' a 'FLOAT'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(334,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(393,1): warning C4305: '+=': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(426,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(489,21): warning C4018: '<': no coinciden signed/unsigned
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(491,19): warning C4018: '<': no coinciden signed/unsigned
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Camara.h(51,63): warning C4244: 'argumento': conversión de 'int' a 'FLOAT'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Camara.h(51,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(318,63): warning C4244: 'argumento': conversión de 'int' a 'FLOAT'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(318,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(377,1): warning C4305: '+=': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(410,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(473,21): warning C4018: '<': no coinciden signed/unsigned
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoRR.h(475,19): warning C4018: '<': no coinciden signed/unsigned
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Camara.h(57,63): warning C4244: 'argumento': conversión de 'int' a 'FLOAT'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Camara.h(57,1): warning C4305: 'argumento': truncamiento de 'double' a 'FLOAT'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\SkyDome.h(295,1): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\SkyDome.h(296,1): warning C4305: '+=': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Billboard.h(410,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Billboard.h(411,15): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\Billboard.h(535,14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
@@ -145,37 +147,37 @@ E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11r
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\GUI.h(159,24): warning C4101: 'textureDesc': variable local sin referencia
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\GUI.h(161,35): warning C4101: 'shaderResourceViewDesc': variable local sin referencia
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(387,1): warning C4305: '+=': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(434,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(438,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(443,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(447,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(452,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(456,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(461,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(465,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(470,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(474,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(479,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(483,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(488,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(492,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(497,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(501,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(506,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(510,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(515,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(519,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(528,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(532,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(537,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(541,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(546,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(550,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(555,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(559,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(564,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(568,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(574,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(433,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(437,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(441,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(446,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(450,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(455,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(459,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(464,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(468,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(473,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(477,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(482,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(486,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(491,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(495,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(500,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(504,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(509,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(513,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(518,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(522,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(531,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(535,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(540,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(544,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(549,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(553,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(558,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(562,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(567,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(571,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(577,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(580,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(583,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
@@ -193,27 +195,34 @@ E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11r
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(619,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(622,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(625,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(637,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(653,58): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(661,1): warning C4305: '+=': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(666,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(628,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(638,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(644,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(650,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(668,58): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(677,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(680,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(682,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(684,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(686,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(688,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(907,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(908,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(909,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(910,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(918,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(919,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(920,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(921,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(930,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(931,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(932,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(933,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(942,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(943,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(944,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(945,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(708,1): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(938,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(939,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(940,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(941,24): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(949,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(950,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(951,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(952,28): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(961,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(962,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(963,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(964,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(973,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(974,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(975,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(976,29): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
   C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoSkyBill.cpp(146,15): warning C4244: 'return': conversión de 'WPARAM' a 'int'; posible pérdida de datos
 E:\Eliza\LMAD\GRAFICAS 2\GRAFICAS COMPUTACIONALES 2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoSkyBill.cpp(228,31): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos

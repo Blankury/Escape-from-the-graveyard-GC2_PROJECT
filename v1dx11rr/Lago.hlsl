@@ -27,7 +27,7 @@ cbuffer cbChangerotation : register(b3)
 
 cbuffer cbChangemov : register(b4)
 {
-    float3 movimiento;
+    float movimiento;
 };
 
 
@@ -41,8 +41,8 @@ struct PS_Input
 {
     float4 pos : SV_POSITION;
     float2 tex0 : TEXCOORD0;
-    
     float4 espacio : TEXCOORD1;
+    float movimiento : TEXCOORD2;
 };
 
 PS_Input VS_Main(VS_Input vertex)
@@ -51,13 +51,13 @@ PS_Input VS_Main(VS_Input vertex)
     vsOut.pos = mul(vertex.pos, worldMatrix);
     vsOut.pos = mul(vsOut.pos, viewMatrix);
     vsOut.pos = mul(vsOut.pos, projMatrix);
-     
+    vsOut.espacio = vsOut.pos;
+    vsOut.movimiento = movimiento;
 
     
     vsOut.tex0 = float2(vertex.tex0.x / 2.0 + 0.5, vertex.tex0.y / 2.0 + 0.5) * 8.0;
     
 
-    vsOut.espacio = vsOut.pos;
 
     
     return vsOut;
@@ -73,8 +73,8 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float2 ndc = (pix.espacio.xy / pix.espacio.w) / 2.0 + 0.5;
     float2 refractTexCoords = float2(ndc.x, -ndc.y);
 	////Usamos la variable movimiento que moverá la distorsión en x y y
-    float2 distortion = (dispMap.Sample(colorSampler, float2 (pix.tex0.x + movimiento.x, pix.tex0.y)).rg * 2.0 - 1.0) * waveStrenght;
-    float2 distortion2 = (dispMap.Sample(colorSampler, float2(-pix.tex0.x + movimiento.x, pix.tex0.y + movimiento.x)).rg * 2.0 - 1.0) * waveStrenght;
+    float2 distortion = (dispMap.Sample(colorSampler, float2 (pix.tex0.x + pix.movimiento, pix.tex0.y)).rg * 2.0 - 1.0) * waveStrenght;
+    float2 distortion2 = (dispMap.Sample(colorSampler, float2(-pix.tex0.x + pix.movimiento, pix.tex0.y + pix.movimiento)).rg * 2.0 - 1.0) * waveStrenght;
 	    
     float2 Total = distortion + distortion2;
     //A la refracción le sumamos el total de la distorsión para hacerla una sola coordenada
@@ -104,7 +104,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
         
     //Salida de color
     text = text * (AportAmb + AportLuzDif);
-    text.a = 0.5;
+    text.a = 0.1;
     return text;
     
 }

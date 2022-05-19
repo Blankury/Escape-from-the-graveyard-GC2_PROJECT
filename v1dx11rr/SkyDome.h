@@ -33,10 +33,14 @@ private:
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 
-	ID3D11ShaderResourceView* textura;
+	ID3D11ShaderResourceView* textura1;
+	ID3D11ShaderResourceView* textura2;
+
 	ID3D11SamplerState* texSampler;
 
 	ID3D11Buffer* matrixBufferCB;
+	ID3D11Buffer* valor;
+
 	MatrixType* matrices;
 
 	SkyComponent* vertices;
@@ -48,7 +52,7 @@ private:
 
 public:
 	SkyDome(int slices, int stacks, float radio, ID3D11Device** d3dDevice,
-		ID3D11DeviceContext** d3dContext, WCHAR* diffuseTex)
+		ID3D11DeviceContext** d3dContext, WCHAR* diffuseTex1, WCHAR* diffuseTex2)
 	{
 		this->slices = slices;
 		this->stacks = stacks;
@@ -57,7 +61,7 @@ public:
 		vertices = NULL;
 		this->d3dDevice = d3dDevice;
 		this->d3dContext = d3dContext;
-		LoadContent(diffuseTex);
+		LoadContent(diffuseTex1, diffuseTex2);
 	}
 
 	~SkyDome()
@@ -91,7 +95,7 @@ public:
 		return true;
 	}
 
-	bool LoadContent(WCHAR* diffuseTex)
+	bool LoadContent(WCHAR* diffuseTex1, WCHAR* diffuseTex2)
 	{
 		HRESULT d3dResult;
 
@@ -197,7 +201,8 @@ public:
 
 		creaIndices();
 
-		d3dResult = D3DX11CreateShaderResourceViewFromFile((*d3dDevice), diffuseTex, 0, 0, &textura, 0);
+		d3dResult = D3DX11CreateShaderResourceViewFromFile((*d3dDevice), diffuseTex1, 0, 0, &textura1, 0);
+		d3dResult = D3DX11CreateShaderResourceViewFromFile((*d3dDevice), diffuseTex2, 0, 0, &textura2, 0);
 
 		if (FAILED(d3dResult))
 		{
@@ -229,6 +234,8 @@ public:
 		constDesc.Usage = D3D11_USAGE_DEFAULT;
 
 		d3dResult = (*d3dDevice)->CreateBuffer(&constDesc, 0, &matrixBufferCB);
+		d3dResult = (*d3dDevice)->CreateBuffer(&constDesc, 0, &valor);
+
 
 		if (FAILED(d3dResult))
 		{
@@ -243,8 +250,10 @@ public:
 	{
 		if (texSampler)
 			texSampler->Release();
-		if (textura)
-			textura->Release();
+		if (textura1)
+			textura1->Release();
+		if (textura2)
+			textura2->Release();
 		if (solidColorVS)
 			solidColorVS->Release();
 		if (solidColorPS)
@@ -257,15 +266,19 @@ public:
 			indexBuffer->Release();
 		if (matrixBufferCB)
 			matrixBufferCB->Release();
+		if (valor)
+			valor->Release();
 
 		texSampler = 0;
-		textura = 0;
+		textura1 = 0;
+		textura2 = 0;
 		solidColorVS = 0;
 		solidColorPS = 0;
 		inputLayout = 0;
 		vertexBuffer = 0;
 		indexBuffer = 0;
 		matrixBufferCB = 0;
+
 
 		return true;
 	}
@@ -278,6 +291,9 @@ public:
 
 	void Render(D3DXVECTOR3 trans)
 	{
+
+		static float valorconst = 0.01;
+		valorconst += 0.00005;
 		if (d3dContext == 0)
 			return;
 
@@ -291,16 +307,21 @@ public:
 
 		(*d3dContext)->VSSetShader(solidColorVS, 0, 0);
 		(*d3dContext)->PSSetShader(solidColorPS, 0, 0);
-		(*d3dContext)->PSSetShaderResources(0, 1, &textura);
+		(*d3dContext)->PSSetShaderResources(0, 1, &textura1);
+		(*d3dContext)->PSSetShaderResources(1, 1, &textura2);
+
 		(*d3dContext)->PSSetSamplers(0, 1, &texSampler);
 
 		D3DXMATRIX worldMat;
 		D3DXMatrixTranslation(&worldMat, trans.x, trans.y - 50.0f, trans.z);
 		D3DXMatrixTranspose(&worldMat, &worldMat);
 		matrices->worldMatrix = worldMat;
-
+		//actualiza los buffers del shader
 		(*d3dContext)->UpdateSubresource(matrixBufferCB, 0, 0, matrices, sizeof(MatrixType), 0);
+		(*d3dContext)->UpdateSubresource(valor, 0, 0, &valorconst, 0, 0);
+		//le pasa al shader los buffers
 		(*d3dContext)->VSSetConstantBuffers(0, 1, &matrixBufferCB);
+		(*d3dContext)->VSSetConstantBuffers(1, 1, &valor);
 
 		(*d3dContext)->DrawIndexed(cantIndex, 0, 0);
 	}
