@@ -48,6 +48,7 @@ private:
 	ID3D11Buffer* viewCB;
 	ID3D11Buffer* projCB;
 	ID3D11Buffer* worldCB;
+	ID3D11Buffer* parpadeoCB;
 	D3DXMATRIX viewMatrix;
 	D3DXMATRIX projMatrix;
 
@@ -67,6 +68,7 @@ private:
 	float posX;
 	float posZ;
 
+	bool llego = false;
 
 public:
 
@@ -297,6 +299,13 @@ public:
 		{
 			return false;
 		}
+		//de parpadeo
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &parpadeoCB);
+
+		if (FAILED(d3dResult))
+		{
+			return false;
+		}
 
 		constDesc.ByteWidth = sizeof(XMFLOAT4);
 		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &cameraPosCB);
@@ -469,6 +478,13 @@ public:
 			return false;
 		}
 
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &parpadeoCB);
+		if (FAILED(d3dResult))
+		{
+			return false;
+		}
+
+
 		constDesc.ByteWidth = sizeof(XMFLOAT4);
 		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &cameraPosCB);
 
@@ -514,7 +530,8 @@ public:
 			projCB->Release();
 		if (worldCB)
 			worldCB->Release();
-
+		if (parpadeoCB)
+			parpadeoCB->Release();
 		if (cameraPosCB)
 			cameraPosCB->Release();
 
@@ -528,6 +545,7 @@ public:
 		viewCB = 0;
 		projCB = 0;
 		worldCB = 0;
+		parpadeoCB = 0;
 		cameraPosCB = 0;
 	}
 
@@ -538,9 +556,24 @@ public:
 
 	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale, bool movCam, int tipoCam)
 	{
-		static float rotation = 0.0f;
-		rotation += 0.01;
-
+		static float parpadeo = 0.0f;
+		if (llego == true) {
+			if (parpadeo > 0) {
+				parpadeo -= 0.01;
+			}
+			else {
+				llego = false;
+			}
+		}
+		else {
+			if (parpadeo < 1.0) {
+				parpadeo += 0.01;
+			}
+			else {
+				llego = true;
+			}
+		}
+		
 		//paso de datos, es decir cuanto es el ancho de la estructura
 		unsigned int stride = sizeof(VertexObj);
 		unsigned int offset = 0;
@@ -608,11 +641,13 @@ public:
 		d3dContext->UpdateSubresource(viewCB, 0, 0, &vista, 0, 0);
 		d3dContext->UpdateSubresource(projCB, 0, 0, &proyeccion, 0, 0);
 		d3dContext->UpdateSubresource(cameraPosCB, 0, 0, &camPos, 0, 0);
+		d3dContext->UpdateSubresource(parpadeoCB, 0, 0, &parpadeo, 0, 0);
 		//le pasa al shader los buffers
 		d3dContext->VSSetConstantBuffers(0, 1, &worldCB);
 		d3dContext->VSSetConstantBuffers(1, 1, &viewCB);
 		d3dContext->VSSetConstantBuffers(2, 1, &projCB);
 		d3dContext->VSSetConstantBuffers(3, 1, &cameraPosCB);
+		d3dContext->VSSetConstantBuffers(4, 1, &cameraPosCB);
 		//cantidad de trabajos
 
 		d3dContext->Draw(m_ObjParser.m_nVertexCount, 0);

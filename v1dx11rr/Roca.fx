@@ -150,6 +150,6 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     }
     float3 finalColor = saturate(ambientColor + diffuseColor * diffuseTerm);
     
-    return textureColor * float4(finalColor, 1.0f);
+    return textureColor * float4(finalColor, 1.0f) + float4(0.0f, 0.0f, 0.05f, 0.1f);
     
 }

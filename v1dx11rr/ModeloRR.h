@@ -578,8 +578,6 @@ public:
 
 	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale, bool movCam, int tipoCam)
 	{
-		static float rotation = 0.0f;
-		rotation += 0.01;
 
 		//paso de datos, es decir cuanto es el ancho de la estructura
 		unsigned int stride = sizeof(VertexObj);

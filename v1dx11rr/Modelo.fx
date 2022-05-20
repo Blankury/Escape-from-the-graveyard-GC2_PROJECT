@@ -122,7 +122,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float3 bumpNormal = (BumpMap.x * pix.tangent) + (BumpMap.y * pix.binorm) + (BumpMap.z * pix.normal);
     bumpNormal = normalize(bumpNormal);
 	//DIRECCIÓN de la luz
-    float3 lightDir = -(float3(0.5f, 1.0f, 0.0f));
+    float3 lightDir = -(float3(0.5f, -1.0f, 0.0f));
 	
 	//Saca la intensidad de la luz usando la dirección y las normales
     float lightIntensity = saturate(dot(pix.normal, lightDir));
@@ -160,6 +160,6 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     }
     float3 finalColor = saturate(ambientColor + diffuseColor * diffuseTerm);
     
-    return textureColor * float4(finalColor, 1.0f) + finalSpec;
+    return (textureColor * float4(finalColor, 1.0f) + finalSpec) + float4(0.0f, 0.0f, 0.05f, 0.1f);
     
 }
