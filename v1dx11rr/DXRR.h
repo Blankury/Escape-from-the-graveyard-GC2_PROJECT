@@ -10,9 +10,18 @@
 #include "Billboard.h"
 #include "ModeloRR.h"
 #include "lago.h"
+#include "Lampara.h"
 #include "XACT3Util.h"
 #include "GUI.h"
 #include "Text.h"
+#include<chrono>
+#include<thread>
+#include <time.h>
+
+using namespace std::this_thread;
+using namespace std::chrono;
+
+
 
 class DXRR{	
 
@@ -58,7 +67,7 @@ public:
 	ModeloRR* puerta2;
 	ModeloRR* puertaA;
 	ModeloRR* lampara;
-	ModeloRR* LUZlampara;
+	LampRR* LUZlampara;
 	ModeloRR* jarron;
 	ModeloRR* lapida_1;
 	ModeloRR* lapida_2;
@@ -88,12 +97,18 @@ public:
 	XACTINDEX cueIndex;
 	CXACT3Util m_XACT3;
 
+	GUI* IMGPALA;
+	GUI* IMGMARTILLO;
+	GUI* HUESOS;
+
+
 	float rotCam;
 	int tipoCam;
 
 	///////Jugabilidad
 
 	int tierraimp;
+	
 	bool entro = false;
 	bool recoger = false;
 	bool Martillo = false;
@@ -101,13 +116,12 @@ public:
 	bool huesos = false;
 	bool excavada[16] = { false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false, };
 	bool postierr = false;
-	bool perdio = false;
 	float segundos;
 	bool victoria;
 
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
-		segundos = 180; // 180 para 3 minutos
+		segundos = 10800; // 10800 para 180 segs - 180 para 3 minutos
 		rotCam = 0;
 		tipoCam = 1;
 		breakpoint = false;
@@ -124,6 +138,7 @@ public:
 		izqder = 0;
 		arriaba = 0;
 		billCargaFuego();
+		srand(time(NULL));
 		tierraimp = 1 + rand() % (16 - 1);
 
 		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(2, 80, -10), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
@@ -158,7 +173,7 @@ public:
 		puertaA = new ModeloRR(d3dDevice, d3dContext, "Assets/Porton/ABIERTA.obj", L"Assets/Porton/lambert2_Base_Color1.png", L"Assets/Porton/lambert2_Roughness.png", L"Assets/Porton/lambert2_Normal_OpenGL.png", 0, -100);
 		pared = new ModeloRR(d3dDevice, d3dContext, "Assets/Paredes/Paredes.obj", L"Assets/Paredes/uigmaawg_2K_Albedo.jpg", L"Assets/Paredes/uigmaawg_2K_Roughness.jpg", L"Assets/Paredes/uigmaawg_2K_Normal.jpg", 0, -100);
 		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
-		LUZlampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Vidrio.obj", L"Assets/Lampara/glass_BaseColor.png", L"Assets/Lampara/glass_Roughness.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
+		LUZlampara = new LampRR(d3dDevice, d3dContext, "Assets/Lampara/Vidrio.obj", L"Assets/Lampara/glass_BaseColor.png", 0, -100);
 		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", L"Assets/Jarron/lambert1_Normal.png", 0, -100);
 		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/troncos.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
 		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
@@ -197,6 +212,11 @@ public:
 		ganar = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
 		entrar = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
 		encuentra = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
+		
+		//UI
+		IMGPALA = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Martillo.png"); //aki se dibuja
+		IMGMARTILLO = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Pala.png");
+		HUESOS = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Huesos.png"); //aki se dibuja
 
 	}
 
@@ -378,6 +398,7 @@ public:
 	
 	void Render(void)
 	{
+		
 		//Trabaja XACT
 		m_XACT3.DoWork();
 		
@@ -404,6 +425,7 @@ public:
 		camara->posCam3p.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 20;
 		camara->UpdateCam(vel, arriaba, izqder, tipoCam);
 
+		#pragma region COLLISIONS
 		//COLLISION WALL
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, camara->posCam.x, 133.0))) {
 			camara->posCam = camara->posCampast;
@@ -417,19 +439,19 @@ public:
 		if (entro)
 		{
 			if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
-					camara->posCam = camara->posCampast;
+				camara->posCam = camara->posCampast;
 			}
 		}
 		else
 		{
+
 			if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
 				if (!(camara->posCam.x < 10.8 && camara->posCam.x > -8)) {
 					camara->posCam = camara->posCampast;
 				}
 			}
 		}
-		
-		#pragma region COLLISIONS
+
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 123.1, -24.9))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba1
@@ -484,8 +506,6 @@ public:
 				postierr = false;
 			}
 		}
-
-
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.5, 23.1))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba7
@@ -495,8 +515,6 @@ public:
 				postierr = false;
 			}
 		}
-
-
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.9, 20.22))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba8
@@ -578,7 +596,14 @@ public:
 				postierr = false;
 			}
 		}
+		//Colisiones Igelsia
+		if (!(camara->posCam.z < 21.6 && camara->posCam.z > 119.0)) {
+			encuentra->DrawText(0, 0, "Estas en el z.", 0.015);
+		}
+		if ((camara->posCam.x < -113.9 && camara->posCam.x > -227)) {
+			encuentra->DrawText(0, 0, "Estas en el x.", 0.015);
 
+		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 28.1, -88.2))) {
 			camara->posCam = camara->posCampast;
 		}
@@ -656,7 +681,12 @@ public:
 				victoria = true;
 			}
 		}
-
+		if (camara->posCam.z < -202.0) {
+			if (victoria == true) {
+				//tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
+				MessageBox(hWnd, L"Ganaste", L"Has escapado con los huesos a tiempo.", MB_OK);
+			}
+		}
 		skydome->Update(camara->vista, camara->proyeccion);
 
 		float camPosXZ[2] = { camara->posCam.x, camara->posCam.z };
@@ -673,9 +703,8 @@ public:
 
 		terreno->Draw(camara->vista, camara->proyeccion);
 
-
 		//DIBUJAR EL TEXTO
-
+		segundos--;
 		tiempo->DrawText(-0.95, 0.95,"Tiempo: " +tiempo->Time(segundos), 0.015); // la ultima variable es espaciado entre las letras jsjsjs
 		
 		if (Pala != true && entro != false) {
@@ -685,25 +714,22 @@ public:
 		if (Pala == true && huesos == false) {
 			encuentra->DrawText(-0.5, 0.8, "Encuentra los huesos.", 0.015);
 		}
-		//bool victoria = false;
-
-		//tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
 
 
-		//if (victoria == true) {
+		if (segundos <= 0) { // este mensaje de derrota funciona, mas no para el timer
 
-		//	tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
+			tiempo->DrawText(0.9, 0, "Derrota", 0.015);
+			MessageBox(hWnd, L"Perdiste", L"Ah llegado un guardia", MB_OK);
 
-		//}
+		}
 
-		//if (segundos <= 0) { // este mensaje de derrota funciona, mas no para el timer
-
-		//	tiempo->DrawText(0, 0, "Derrota", 0.015);
-		//}
-
-
+		//GUI
+		IMGPALA->Draw(-0.9, 0); // lo que esta entre parentesis, son las cordenadas
+		IMGMARTILLO->Draw(-0.7, 0.0);
+		HUESOS->Draw(-0.4, 0.0);
 
 		//DIBUJAR LOS BILLBOARDS
+		//ESQUELETO
 		switch (tierraimp) {
 		case 1: 
 			if (huesos == false) {
@@ -939,35 +965,37 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 
-			perdio = true;
+			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
 		}
 		hojas1->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-54.3, -58.2, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 211.6, -56.7))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			perdio = true;
+
+			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+
 		}
 		hojas2->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			79, 119, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 70.3, 113.3))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			perdio = true;
+			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
 		}
 		hojas3->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			224, -55.1, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -63.4, -52.8))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			perdio = true;
+			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
 		}
 		hojas4->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-106, -7.8, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -108.4, -10.5))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			perdio = true;
+			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
 		}
 		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-100, -78, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');

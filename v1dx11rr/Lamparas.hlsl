@@ -17,6 +17,10 @@ cbuffer cbChangeOnResize : register(b2)
     matrix projMatrix;
 };
 
+cbuffer cbChangesOccasionally : register(b3)
+{
+    float3 cameraPos;
+};
 
 struct VS_Input
 {

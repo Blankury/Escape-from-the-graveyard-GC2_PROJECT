@@ -30,9 +30,14 @@ private:
 
 	//Bitmap
 
+	// NOTA: es la que nos dice como se va a dibujar en pantalla
+
+	ID3D11Texture2D* texturaGUI; // NOTA: texture 2d de direct 3-11, si que nombre tan feo sdlkjfkls
+	ID3D11Texture2D* texturaPala;
+
 
 	UINT numVertex;
-	UINT numIndex;
+	UINT numIndex; //aaa
 
 	float Height;
 	float Width;
@@ -51,7 +56,16 @@ private:
 		D3DXVECTOR3 normal;
 	};
 public:
+
+	// NOTA: este es el constructor, este necesita dos funciones muy importantes, initscene y create bitmap
+
 	GUI(ID3D11Device* d3d11Device, ID3D11DeviceContext* d3dContext, float Height, float Width, LPCWSTR texturePath) {
+
+		this->Height = Height; // se mandan a llamar estas funciones para poder pasar alto/ancho
+		this->Width = Width;
+
+		InitScene(d3d11Device, d3dContext, texturePath);
+		createBitMap();
 
 	}
 
@@ -154,9 +168,9 @@ public:
 		}
 	}
 
-	void createBitMap() {
+	void createBitMap() { // NOTA: se encarga de crear toda la definicion de nuestra textura 2d
 
-		D3D11_TEXTURE2D_DESC textureDesc;
+		D3D11_TEXTURE2D_DESC textureDesc; // necesitamos una descripcion de la textura 
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 		D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
 
@@ -164,11 +178,27 @@ public:
 
 		// Inicialisamos la descripcion de la textura.
 
+		ZeroMemory(&textureDesc, sizeof(textureDesc));  //Primero hay que limipar el espacio de memoria
+
 
 		// Llenamos la descripcion de la textura
 
+		textureDesc.Width = Width / 2; // se divide entre dos porque suele salir muy grande la textura 
+		textureDesc.Height = Height / 2;
+		textureDesc.MipLevels = 1; // definimos que no queremos perdida de calidad;
+		textureDesc.ArraySize = 1; // cuantas img vamos a pasar 
+		textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; // va en formato rgba de 32 bits Uwu
+		textureDesc.SampleDesc.Count = 1; //cuantos samplers jsjs
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE; // todas estas caract, se ligan a una texura
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = 0; // esta no se usa al menos no aqui 
+
 
 		// creamos la textura con el device
+
+		d3d11Device->CreateTexture2D(&textureDesc, NULL, &texturaGUI);
+		d3d11Device->CreateTexture2D(&textureDesc, NULL, &texturaPala);
 
 
 
@@ -269,6 +299,11 @@ public:
 		vertices de el billboard, lo estaremos dibujando directamente sobre la pantalla, recuerden que las
 		coordenadas 0,0 son el centro de la pantalla, los lados van de -1 a 1*/
 
+		//primero necesitamos settear los shaders 
+
+		d3dContext->VSSetShader(VS, 0, 0);
+		d3dContext->PSSetShader(PS, 0, 0);
+
 
 
 		UINT stride = sizeof(SimpleVertex);
@@ -279,6 +314,25 @@ public:
 		d3dContext->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 		// Seteamos la matriz WVP a una escala y traslacion dada apara acomodarla en pantalla
+
+			// definir las matrices (escala, traslacion)
+
+		D3DXMATRIX Scale, Translation, World;
+		D3DXMatrixScaling(&Scale, 1, 1 * 1.5, 1);
+		D3DXMatrixTranslation(&Translation, posX, posY, 0.8);
+		World = Scale * Translation;
+
+		// se tiene que transponer para evitar problemas antes de pasarla
+
+		D3DXMatrixTranspose(&consBuff.WorldMatrix, &World);
+
+		// actualizar los recursos
+		d3dContext->UpdateSubresource(cbBuffer, 0, NULL, &consBuff, 0, 0);
+		d3dContext->VSSetConstantBuffers(0, 1, &cbBuffer);
+
+		d3dContext->PSSetShaderResources(0, 1, &Texture);
+		d3dContext->PSSetSamplers(0, 1, &TexSamplerState);
+
 
 
 

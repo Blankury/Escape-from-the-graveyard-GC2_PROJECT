@@ -167,7 +167,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			} break;
         
         case WM_MOUSEMOVE: {
-
             SetCursorPos(actualPoint.x, actualPoint.y);
             dxrr->frameBillboard++;
             if (dxrr->frameBillboard == 32)

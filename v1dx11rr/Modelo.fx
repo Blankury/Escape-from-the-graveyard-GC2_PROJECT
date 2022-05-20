@@ -109,7 +109,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float4 textureColor = colorMap.Sample(colorSampler, pix.tex0);
     float4 color = float4(0.2, 0.2, 0.2, 1);
 	//Ambiente
-    float3 ambientColor = float3(0.0f, 0.0f, 0.2f);
+    float3 ambientColor = float3(0.0f, 0.0f, 0.1f);
     float3 diffuseColor = float3(1.0f, 1.0f, 1.0f);
 	//Color especular
     float4 specular = float4(0.0, 0.0, 0.0, 1.0);

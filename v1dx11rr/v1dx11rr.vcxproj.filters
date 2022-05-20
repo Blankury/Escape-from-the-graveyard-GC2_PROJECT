@@ -51,6 +51,9 @@
     <ClInclude Include="Text.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Lampara.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.fx">
@@ -90,6 +93,9 @@
       <Filter>Archivos de código fuente</Filter>
     </FxCompile>
     <FxCompile Include="Text.fx">
+      <Filter>Archivos de encabezado</Filter>
+    </FxCompile>
+    <FxCompile Include="GUI.fx">
       <Filter>Archivos de encabezado</Filter>
     </FxCompile>
   </ItemGroup>

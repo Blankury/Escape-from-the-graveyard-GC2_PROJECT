@@ -163,6 +163,7 @@
     <ClInclude Include="GamePadRR.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="lago.h" />
+    <ClInclude Include="Lampara.h" />
     <ClInclude Include="loadModel.h" />
     <ClInclude Include="ModeloRR.h" />
     <ClInclude Include="SkyDome.h" />
@@ -182,6 +183,7 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_Main</EntryPointName>
     </FxCompile>
     <FxCompile Include="Billboard.hlsl" />
+    <FxCompile Include="GUI.fx" />
     <FxCompile Include="Lago.hlsl" />
     <FxCompile Include="Lamparas.hlsl" />
     <FxCompile Include="Modelo.fx" />
