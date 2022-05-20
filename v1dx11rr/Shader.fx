@@ -63,9 +63,9 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 	//Lo que será el color final
 	float4 fColor = float4(1,0,0,1);
 	//Luz ambiental
-	float4 ambient = float4(0.1f, 0.1f, 0.1f, 1.0f);
+	float4 ambient = float4(0.0f, 0.0f, 0.1f, 1.0f);
 	//Dirección de la luz
-    float3 DiffuseDirection = float3(500.0f, 500.0f, -1000.0f);
+    float3 DiffuseDirection = -(float3(0.5f, -1.0f, 0.0f));
 	//Color de la luz difusa
     float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	
@@ -92,7 +92,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 	//Aportación difusa tomando el color de la luz difusa y el resultado del bump de las normalesw
     float4 aportdif = saturate(DiffuseColor * FALL);
 	
-    fColor = textf * (ambient + aportdif);
+    fColor = textf * (saturate(ambient) + aportdif);
 
 	return fColor;
 }

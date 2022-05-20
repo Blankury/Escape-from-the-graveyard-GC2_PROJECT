@@ -68,7 +68,7 @@ PS_Input VS_Main(VS_Input vertex)
 
 float4 PS_Main(PS_Input pix) : SV_TARGET
 {
-    float4 LuzAmbiental = float4(0.1f, 0.1f, 0.1f, 1.0f);
+    float4 LuzAmbiental = float4(0.0f, 0.0f, 0.2f, 1.0f);
     float FAD = 0.8f;
     float3 DirLuz = float3(500.0f, 500.0f, -1000.0f);
     
@@ -98,7 +98,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float4 textureColor = colorMap.Sample(colorSampler, refractTexCoords);
 
     //Aporte ambiental
-    float4 AportAmb = LuzAmbiental * 0.2;//*FA
+    float4 AportAmb = LuzAmbiental * 0.5;//*FA
     
     //Aporte difuso
     float4 txtnrm = normalMap.Sample(colorSampler, pix.tex0);
@@ -112,7 +112,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float FALL = dot(bumpnormal, normalize(DirLuz));
     float diff = saturate(dot(normalize(DirLuz), bumpnormal));
     
-    float4 luzdifusafinal = float4(0.0f, 0.0f, 0.0f, 1.0f);
+    float4 luzdifusafinal = float4(0.1f, 0.0f, 0.6f, 1.0f);
     float4 AportDif = saturate(luzdifusafinal * FALL * FAD); //FAD
     //float4 luzdifusafinal = ColorLuzDifusa * (1.0f) * diff;
 

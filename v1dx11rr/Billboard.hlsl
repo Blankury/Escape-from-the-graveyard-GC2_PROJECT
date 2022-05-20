@@ -45,7 +45,7 @@ PS_Input VS_Main(VS_Input vertex)
 
 float4 PS_Main(PS_Input pix) : SV_TARGET
 {
-	float3 ambient = float3(0.1f, 0.1f, 0.1f);
+	float3 ambient = float3(0.0f, 0.0f, 0.5f);
 
 	float4 text = colorMap.Sample(colorSampler, pix.tex0);
 	//float intensity = 0.4;
@@ -58,7 +58,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 	else {
 		//aqui se calcula la iluminacion difusa
 		float4 textnorm = normalMap.Sample(colorSampler, pix.tex0);
-		float4 LuzAmbiental = float4(1.0, 1.0, 1.0, 1);
+		float4 LuzAmbiental = float4(0.0, 0.0, 0.2, 1);
 		float FA = 0.3;
 		///////////////////////////////////////////////
 		// aqui se desarrolla el elemento ambiental

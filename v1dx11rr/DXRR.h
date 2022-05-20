@@ -10,10 +10,12 @@
 #include "Billboard.h"
 #include "ModeloRR.h"
 #include "lago.h"
-#include "Lampara.h"
 #include "XACT3Util.h"
 #include "GUI.h"
 #include "Text.h"
+#include "Roca.h"
+#include "Lampara.h"
+
 #include<chrono>
 #include<thread>
 #include <time.h>
@@ -69,19 +71,19 @@ public:
 	ModeloRR* lampara;
 	LampRR* LUZlampara;
 	ModeloRR* jarron;
-	ModeloRR* lapida_1;
-	ModeloRR* lapida_2;
-	ModeloRR* lapida_3;
-	ModeloRR* lapida_4;
-	ModeloRR* tronco; 
+	RocaRR* lapida_1;
+	RocaRR* lapida_2;
+	RocaRR* lapida_3;
+	RocaRR* lapida_4;
+	RocaRR* tronco;
 	ModeloRR* martillo;
 	ModeloRR* pala;
-	ModeloRR* tierra[16];
+	RocaRR* tierra[16];
 	ModeloRR* Iglesia;
 	ModeloRR* Casa;
-	ModeloRR* arbolseco;
+	RocaRR* arbolseco;
 	ModeloRR* bike;
-
+	
 	Text* tiempo, *ganar, *entrar, *encuentra;
 
 	float izqder;
@@ -175,34 +177,34 @@ public:
 		lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Lampara/Lampara.obj", L"Assets/Lampara/Lamp_BaseColor.png", L"Assets/Lampara/Lamp_Metallic.png", L"Assets/Lampara/Lamp_Normal.png", 0, -100);
 		LUZlampara = new LampRR(d3dDevice, d3dContext, "Assets/Lampara/Vidrio.obj", L"Assets/Lampara/glass_BaseColor.png", 0, -100);
 		jarron = new ModeloRR(d3dDevice, d3dContext, "Assets/Jarron/Jarron.obj", L"Assets/Jarron/lambert1_Base_Color.png", L"Assets/Jarron/lambert1_Roughness.png", L"Assets/Jarron/lambert1_Normal.png", 0, -100);
-		tronco = new ModeloRR(d3dDevice, d3dContext, "Assets/Tronco/troncos.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
-		lapida_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
-		lapida_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida2.obj", L"Assets/Lapidas/Lapida2_color.png", L"Assets/Lapidas/Lapida2_roughness.png", L"Assets/Lapidas/Lapida2_normal.png", 0, -100);
-		lapida_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida3.obj", L"Assets/Lapidas/Lapida3_color.png", L"Assets/Lapidas/Lapida3_roughness.png", L"Assets/Lapidas/Lapida3_normal.png", 0, -100);
-		lapida_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", L"Assets/Lapidas/Lapida4_normal.png", 0, -100);
+		tronco = new RocaRR(d3dDevice, d3dContext, "Assets/Tronco/troncos.obj", L"Assets/Tronco/T_L0001_basecolor.jpg", L"Assets/Tronco/T_L0001_roughness.jpg", L"Assets/Tronco/T_L0001_normal.jpg", 0, -100);
+		lapida_1 = new RocaRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida1.obj", L"Assets/Lapidas/Lapida1_color.png", L"Assets/Lapidas/Lapida1_roughness.png", L"Assets/Lapidas/Lapida1_normal.png", 0, -100);
+		lapida_2 = new RocaRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida2.obj", L"Assets/Lapidas/Lapida2_color.png", L"Assets/Lapidas/Lapida2_roughness.png", L"Assets/Lapidas/Lapida2_normal.png", 0, -100);
+		lapida_3 = new RocaRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida3.obj", L"Assets/Lapidas/Lapida3_color.png", L"Assets/Lapidas/Lapida3_roughness.png", L"Assets/Lapidas/Lapida3_normal.png", 0, -100);
+		lapida_4 = new RocaRR(d3dDevice, d3dContext, "Assets/Lapidas/Lapida4.obj", L"Assets/Lapidas/Lapida4_color.png", L"Assets/Lapidas/Lapida4_roughness.png", L"Assets/Lapidas/Lapida4_normal.png", 0, -100);
 		martillo = new ModeloRR(d3dDevice, d3dContext, "Assets/Martillo/Martillo_mov.obj", L"Assets/Martillo/SurvivalKit_Hammer_Diffuse.png", L"Assets/Martillo/SurvivalKit_Hammer_Specular.png", L"Assets/Martillo/SurvivalKit_Hammer_Normal.png", 0, -100);
 		pala = new ModeloRR(d3dDevice, d3dContext, "Assets/Pala/Pala.obj", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Base_Color.png", L"Assets/Pala/Shovel_Mat_Normal_OpenGL.png", 0, -100);
 		Iglesia = new ModeloRR(d3dDevice, d3dContext, "Assets/Iglesia/igl.obj", L"Assets/Iglesia/chapel_diffuse.png", L"Assets/Iglesia/chapel_spec.png", L"Assets/Iglesia/chapel_normal.png", 0, -100);
-		arbolseco = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/arbol.obj", L"Assets/Arbol/tree_DefaultMaterial_BaseColor.png", L"Assets/Arbol/tree_DefaultMaterial_Roughness.png", L"Assets/Arbol/tree_DefaultMaterial_Normal.png", 0, -100);
+		arbolseco = new RocaRR(d3dDevice, d3dContext, "Assets/Arbol/arbol.obj", L"Assets/Arbol/tree_DefaultMaterial_BaseColor.png", L"Assets/Arbol/tree_DefaultMaterial_Roughness.png", L"Assets/Arbol/tree_DefaultMaterial_Normal.png", 0, -100);
 		Casa = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/casa.obj", L"Assets/Casita/Diffuse.png", L"Assets/Casita/Diffuse.png", L"Assets/Casita/normal.png", 0, -100);
 
 		//TIERRAS
-		tierra[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[2] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra2.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[3] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra3.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[4] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra4.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[5] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra5.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[6] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra6.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[7] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra7.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[8] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra8.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[9] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra9.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[10] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra10.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[11] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra11.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[12] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra12.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[13] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra13.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[14] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra14.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
-		tierra[15] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra15.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[0] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[1] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[2] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra2.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[3] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra3.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[4] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra4.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[5] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra5.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[6] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra6.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[7] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra7.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[8] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra8.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[9] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra9.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[10] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra10.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[11] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra11.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[12] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra12.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[13] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra13.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[14] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra14.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
+		tierra[15] = new RocaRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra15.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 
 		//VEHICULO
 		bike = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, 0);
@@ -214,8 +216,8 @@ public:
 		encuentra = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
 		
 		//UI
-		IMGPALA = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Martillo.png"); //aki se dibuja
-		IMGMARTILLO = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Pala.png");
+		IMGMARTILLO = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Martillo.png"); //aki se dibuja
+		IMGPALA = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Pala.png");
 		HUESOS = new GUI(d3dDevice, d3dContext, 0.15, 0.26, L"Assets/GUI/Huesos.png"); //aki se dibuja
 
 	}
@@ -597,12 +599,9 @@ public:
 			}
 		}
 		//Colisiones Igelsia
-		if (!(camara->posCam.z < 21.6 && camara->posCam.z > 119.0)) {
+		if ((camara->posCam.z > 21.6 && camara->posCam.z < 118.0) && (camara->posCam.x < -113.9 && camara->posCam.x > -227)) {
+			camara->posCam = camara->posCampast; 
 			encuentra->DrawText(0, 0, "Estas en el z.", 0.015);
-		}
-		if ((camara->posCam.x < -113.9 && camara->posCam.x > -227)) {
-			encuentra->DrawText(0, 0, "Estas en el x.", 0.015);
-
 		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 28.1, -88.2))) {
 			camara->posCam = camara->posCampast;
@@ -685,6 +684,7 @@ public:
 			if (victoria == true) {
 				//tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
 				MessageBox(hWnd, L"Ganaste", L"Has escapado con los huesos a tiempo.", MB_OK);
+				PostQuitMessage(0);
 			}
 		}
 		skydome->Update(camara->vista, camara->proyeccion);
@@ -724,9 +724,15 @@ public:
 		}
 
 		//GUI
-		IMGPALA->Draw(-0.9, 0); // lo que esta entre parentesis, son las cordenadas
-		IMGMARTILLO->Draw(-0.7, 0.0);
-		HUESOS->Draw(-0.4, 0.0);
+		if (Pala == true) {
+			IMGPALA->Draw(-0.8, -0.2); // lo que esta entre parentesis, son las cordenadas
+		}
+		if (huesos == true) {
+			HUESOS->Draw(0, -0.2);
+		}
+		if (Martillo == true) {
+			IMGMARTILLO->Draw(-0.4, -0.2);
+		}
 
 		//DIBUJAR LOS BILLBOARDS
 		//ESQUELETO
@@ -966,6 +972,8 @@ public:
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 
 			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			PostQuitMessage(0);
+
 		}
 		hojas1->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-54.3, -58.2, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
@@ -974,6 +982,8 @@ public:
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 
 			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			PostQuitMessage(0);
+
 
 		}
 		hojas2->Draw(camara->vista, camara->proyeccion, camara->posCam,
@@ -982,6 +992,8 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			PostQuitMessage(0);
+
 		}
 		hojas3->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			224, -55.1, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
@@ -989,6 +1001,8 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			PostQuitMessage(0);
+
 		}
 		hojas4->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-106, -7.8, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
@@ -996,6 +1010,8 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			PostQuitMessage(0);
+
 		}
 		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-100, -78, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');
@@ -1031,7 +1047,7 @@ public:
 			puerta1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 			puerta2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
-		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
+		lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 40.0f, 0, 'A', 1, false, tipoCam);
 		LUZlampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		jarron->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		tronco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 250.0, 0, 'A', 1, false, tipoCam);

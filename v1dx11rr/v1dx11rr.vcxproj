@@ -166,6 +166,7 @@
     <ClInclude Include="Lampara.h" />
     <ClInclude Include="loadModel.h" />
     <ClInclude Include="ModeloRR.h" />
+    <ClInclude Include="Roca.h" />
     <ClInclude Include="SkyDome.h" />
     <ClInclude Include="TerrenoRR.h" />
     <ClInclude Include="Text.h" />
@@ -187,6 +188,7 @@
     <FxCompile Include="Lago.hlsl" />
     <FxCompile Include="Lamparas.hlsl" />
     <FxCompile Include="Modelo.fx" />
+    <FxCompile Include="Roca.fx" />
     <FxCompile Include="Text.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

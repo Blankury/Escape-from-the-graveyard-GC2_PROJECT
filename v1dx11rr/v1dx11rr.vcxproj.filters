@@ -54,6 +54,9 @@
     <ClInclude Include="Lampara.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Roca.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.fx">
@@ -97,6 +100,9 @@
     </FxCompile>
     <FxCompile Include="GUI.fx">
       <Filter>Archivos de encabezado</Filter>
+    </FxCompile>
+    <FxCompile Include="Roca.fx">
+      <Filter>Archivos de código fuente</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

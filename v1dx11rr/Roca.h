@@ -1,5 +1,7 @@
-#ifndef _Lampara_
-#define _Lampara_
+#ifndef _Roca
+#define _Roca
+
+//#define _XM_NO_INTRINSICS_
 
 #include <d3d11.h>
 #include <d3dx11.h>
@@ -13,7 +15,7 @@
 
 using namespace std;
 
-class LampRR {
+class RocaRR {
 private:
 	struct VertexComponent
 	{
@@ -43,6 +45,8 @@ private:
 	ID3D11Buffer* indexBuffer;
 
 	ID3D11ShaderResourceView* colorMap;
+	ID3D11ShaderResourceView* specMap;
+	ID3D11ShaderResourceView* bumpMap;
 	ID3D11SamplerState* colorMapSampler;
 
 	ID3D11Buffer* viewCB;
@@ -53,6 +57,8 @@ private:
 
 	ID3D11Buffer* cameraPosCB;
 	XMFLOAT3 camPos;
+	ID3D11Buffer* specForceCB;
+	float specForce;
 
 	int ancho, alto;
 	int anchoTexTerr, altoTexTerr;
@@ -67,10 +73,20 @@ private:
 	float posX;
 	float posZ;
 
+	float sphere[3];
+
 
 public:
 
-	LampRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, float _posX, float _posZ)
+	float* getSphere(float radio) {
+		sphere[0] = posX;
+		sphere[1] = posZ;
+		sphere[2] = radio;
+
+		return sphere;
+	}
+
+	RocaRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, WCHAR* normalTexturePath, float _posX, float _posZ)
 	{
 		//copiamos el device y el device context a la clase terreno
 		d3dContext = D3DContext;
@@ -80,10 +96,10 @@ public:
 		posZ = _posZ;
 
 		//aqui cargamos las texturas de alturas y el cesped
-		CargaParametros(ModelPath, colorTexturePath);//L"Assets/Tent-Tower/tent_diffuse.jpg"
+		CargaParametros(ModelPath, colorTexturePath, specularTexturePath, normalTexturePath);//L"Assets/Tent-Tower/tent_diffuse.jpg"
 	}
 
-	LampRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, float _posX, float _posZ)
+	RocaRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, float _posX, float _posZ)
 	{
 		//copiamos el device y el device context a la clase terreno
 		d3dContext = D3DContext;
@@ -96,7 +112,7 @@ public:
 		CargaParametros(ModelPath, colorTexturePath, specularTexturePath);//L"Assets/Tent-Tower/tent_diffuse.jpg"
 	}
 
-	~LampRR()
+	~RocaRR()
 	{
 		//libera recursos
 
@@ -146,7 +162,7 @@ public:
 		return true;
 	}
 
-	bool CargaParametros(char* ModelPath, WCHAR* diffuseTex)
+	bool CargaParametros(char* ModelPath, WCHAR* diffuseTex, WCHAR* specularTex, WCHAR* normalTex)
 	{
 		HRESULT d3dResult;
 
@@ -155,7 +171,7 @@ public:
 		//cargamos el shaders de vertices que esta contenido en el Shader.fx, note
 		//que VS_Main es el nombre del vertex shader en el shader, vsBuffer contendra
 		//al puntero del mismo
-		bool compileResult = CompileD3DShader(L"Lamparas.hlsl", "VS_Main", "vs_4_0", &vsBuffer);
+		bool compileResult = CompileD3DShader(L"Roca.fx", "VS_Main", "vs_4_0", &vsBuffer);
 		//en caso de no poder cargarse ahi muere la cosa
 		if (compileResult == false)
 		{
@@ -203,7 +219,7 @@ public:
 		ID3DBlob* psBuffer = 0;
 		// de los vertices pasamos al pixel shader, note que el nombre del shader es el mismo
 		//ahora buscamos al pixel shader llamado PS_Main
-		compileResult = CompileD3DShader(L"Lamparas.hlsl", "PS_Main", "ps_4_0", &psBuffer);
+		compileResult = CompileD3DShader(L"Roca.fx", "PS_Main", "ps_4_0", &psBuffer);
 
 		if (compileResult == false)
 		{
@@ -222,6 +238,8 @@ public:
 
 		//aqui va la carga del modelo con el metodo creadoModelPath
 		m_ObjParser.LoadFile(ModelPath); //"Assets/Tent-Tower/Tienda-Top.obj"
+
+
 
 
 		//proceso de guardar el buffer de vertices para su uso en el render
@@ -246,6 +264,8 @@ public:
 
 		//crea los accesos de las texturas para los shaders 
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, diffuseTex, 0, 0, &colorMap, 0);
+		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, specularTex, 0, 0, &specMap, 0);
+		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, normalTex, 0, 0, &bumpMap, 0);
 		if (FAILED(d3dResult))
 		{
 			return false;
@@ -301,6 +321,8 @@ public:
 		constDesc.ByteWidth = sizeof(XMFLOAT4);
 		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &cameraPosCB);
 
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &specForceCB);
+
 		if (FAILED(d3dResult))
 		{
 			return false;
@@ -332,7 +354,7 @@ public:
 		//cargamos el shaders de vertices que esta contenido en el Shader.fx, note
 		//que VS_Main es el nombre del vertex shader en el shader, vsBuffer contendra
 		//al puntero del mismo
-		bool compileResult = CompileD3DShader(L"Lamparas.hlsl", "VS_Main", "vs_4_0", &vsBuffer);
+		bool compileResult = CompileD3DShader(L"Roca.fx", "VS_Main", "vs_4_0", &vsBuffer);
 		//en caso de no poder cargarse ahi muere la cosa
 		if (compileResult == false)
 		{
@@ -358,6 +380,12 @@ public:
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 1, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "NORMAL", 2, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+
+
+
 		};
 
 		unsigned int totalLayoutElements = ARRAYSIZE(solidColorLayout);
@@ -416,7 +444,7 @@ public:
 
 		//crea los accesos de las texturas para los shaders 
 		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, diffuseTex, 0, 0, &colorMap, 0);
-
+		d3dResult = D3DX11CreateShaderResourceViewFromFile(d3dDevice, specularTex, 0, 0, &specMap, 0);
 		if (FAILED(d3dResult))
 		{
 			return false;
@@ -472,6 +500,8 @@ public:
 		constDesc.ByteWidth = sizeof(XMFLOAT4);
 		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &cameraPosCB);
 
+		d3dResult = d3dDevice->CreateBuffer(&constDesc, 0, &specForceCB);
+
 		if (FAILED(d3dResult))
 		{
 			return false;
@@ -500,6 +530,10 @@ public:
 			colorMapSampler->Release();
 		if (colorMap)
 			colorMap->Release();
+		if (specMap)
+			specMap->Release();
+		if (bumpMap)
+			bumpMap->Release();
 		if (VertexShaderVS)
 			VertexShaderVS->Release();
 		if (solidColorPS)
@@ -517,9 +551,14 @@ public:
 
 		if (cameraPosCB)
 			cameraPosCB->Release();
+		if (specForceCB)
+			specForceCB->Release();
+
 
 		colorMapSampler = 0;
 		colorMap = 0;
+		specMap = 0;
+		bumpMap = 0;
 		VertexShaderVS = 0;
 		solidColorPS = 0;
 		inputLayout = 0;
@@ -529,6 +568,7 @@ public:
 		projCB = 0;
 		worldCB = 0;
 		cameraPosCB = 0;
+		specForceCB = 0;
 	}
 
 	void Update(float dt)
@@ -563,6 +603,8 @@ public:
 		d3dContext->PSSetShader(solidColorPS, 0, 0);
 		//pasa lo sbuffers al shader
 		d3dContext->PSSetShaderResources(0, 1, &colorMap);
+		d3dContext->PSSetShaderResources(1, 1, &specMap);
+		d3dContext->PSSetShaderResources(2, 1, &bumpMap);
 
 		d3dContext->PSSetSamplers(0, 1, &colorMapSampler);
 
@@ -608,11 +650,13 @@ public:
 		d3dContext->UpdateSubresource(viewCB, 0, 0, &vista, 0, 0);
 		d3dContext->UpdateSubresource(projCB, 0, 0, &proyeccion, 0, 0);
 		d3dContext->UpdateSubresource(cameraPosCB, 0, 0, &camPos, 0, 0);
+		d3dContext->UpdateSubresource(specForceCB, 0, 0, &specForce, 0, 0);
 		//le pasa al shader los buffers
 		d3dContext->VSSetConstantBuffers(0, 1, &worldCB);
 		d3dContext->VSSetConstantBuffers(1, 1, &viewCB);
 		d3dContext->VSSetConstantBuffers(2, 1, &projCB);
 		d3dContext->VSSetConstantBuffers(3, 1, &cameraPosCB);
+		d3dContext->VSSetConstantBuffers(4, 1, &specForceCB);
 		//cantidad de trabajos
 
 		d3dContext->Draw(m_ObjParser.m_nVertexCount, 0);
