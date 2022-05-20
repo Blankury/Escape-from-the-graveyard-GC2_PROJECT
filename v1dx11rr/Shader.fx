@@ -63,11 +63,11 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 	//Lo que será el color final
 	float4 fColor = float4(1,0,0,1);
 	//Luz ambiental
-	float4 ambient = float4(0.0f, 0.0f, 0.0f, 1.0f);
+	float4 ambient = float4(0.0f, 0.0f, 0.2f, 1.0f);
 	//Dirección de la luz
     float3 DiffuseDirection = float3(500.0f, 500.0f, -1000.0f);
 	//Color de la luz difusa
-    float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    float4 DiffuseColor = float4(0.1f, 0.1f, 0.4f, 1.0f);
 	
 	//Colores
 	float4 text = colorMap.Sample(colorSampler, pix.tex0);
@@ -93,12 +93,6 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
     float4 aportdif = saturate(DiffuseColor * FALL);
 	
     fColor = textf * (ambient + aportdif);
-	
-    //float3 diffuse = dot(-DiffuseDirection, pix.normal);
-    //diffuse = saturate(diffuse * DiffuseColor.rgb);
-    //diffuse = saturate(diffuse + ambient);
-
-    //fColor = float4(textf.rgb * diffuse, 1.0f);
 
 	return fColor;
 }

@@ -12,7 +12,7 @@
 #include "lago.h"
 #include "XACT3Util.h"
 #include "GUI.h"
-
+#include "Text.h"
 
 class DXRR{	
 
@@ -48,8 +48,6 @@ public:
 	BillboardRR* esqueleto;
 	BillboardRR *arbol, *arbol1, *arbol2, *arbol3, *arbol4, *arbol5, *arbol6, *arbol7;
 
-
-
 	LagoRR* lago;
 	LagoRR* lago2;
 
@@ -75,14 +73,12 @@ public:
 	ModeloRR* arbolseco;
 	ModeloRR* bike;
 
-	ModeloRR* jugador;
-	int tierraCorrecta = rand() % 15;
+	Text* tiempo, *ganar, *entrar, *encuentra;
 
 	float izqder;
 	float arriaba;
 	float vel;
 	bool breakpoint;
-	float posibilidades[16];
 
 	vector2 uv1[32];
 	vector2 uv2[32];
@@ -96,17 +92,22 @@ public:
 	int tipoCam;
 
 	///////Jugabilidad
+
+	int tierraimp;
 	bool entro = false;
+	bool recoger = false;
 	bool Martillo = false;
 	bool Pala = false;
 	bool huesos = false;
-	bool Abierta_Cerrada = false;
 	bool excavada[16] = { false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false, };
 	bool postierr = false;
-
+	bool perdio = false;
+	float segundos;
+	bool victoria;
 
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
+		segundos = 180; // 180 para 3 minutos
 		rotCam = 0;
 		tipoCam = 1;
 		breakpoint = false;
@@ -123,14 +124,15 @@ public:
 		izqder = 0;
 		arriaba = 0;
 		billCargaFuego();
-		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(2, 80, -10), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
-		terreno = new TerrenoRR(900, 900, d3dDevice, d3dContext);
+		tierraimp = 1 + rand() % (16 - 1);
 
+		camara = new Camara(D3DXVECTOR3(0, 80, -140), D3DXVECTOR3(2, 80, -10), D3DXVECTOR3(0, 1, 0), Ancho, Alto);
+		
+		terreno = new TerrenoRR(900, 900, d3dDevice, d3dContext);
 		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"skydome_2.jpg", L"skydome_1.jpg");
 		
 		//AGUA
 		lago = new LagoRR(L"Water_001_COLOR.jpg", L"Water_001_NORM.jpg", L"Water_001_DISP.png", d3dDevice, d3dContext, 4);
-
 
 		//BILLBOARDS
 		billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 6);
@@ -139,7 +141,6 @@ public:
 		hojas2 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
 		hojas3 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
 		hojas4 = new BillboardRR(L"Piso.png", L"Piso_normal.png", d3dDevice, d3dContext, 6);
-
 		esqueleto = new BillboardRR(L"Bill.png", L"Bill_normal.png", d3dDevice, d3dContext, 6);
 		arbol = new BillboardRR(L"Bill1.png", L"Bill1_normal.png", d3dDevice, d3dContext, 6);
 		arbol1 = new BillboardRR(L"Bill1.png", L"Bill1_normal.png", d3dDevice, d3dContext, 6);
@@ -171,7 +172,6 @@ public:
 		Casa = new ModeloRR(d3dDevice, d3dContext, "Assets/Casita/casa.obj", L"Assets/Casita/Diffuse.png", L"Assets/Casita/Diffuse.png", L"Assets/Casita/normal.png", 0, -100);
 
 		//TIERRAS
-
 		tierra[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra0.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra1.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[2] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra2.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
@@ -189,7 +189,14 @@ public:
 		tierra[14] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra14.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 		tierra[15] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/Tierra15.obj", L"Assets/Tierra/tierra.jpg", L"Assets/Tierra/tierra_rough.jpg", L"Assets/Tierra/tierra_normal.jpg", 0, -100);
 
+		//VEHICULO
 		bike = new ModeloRR(d3dDevice, d3dContext, "Assets/Bici/Bici.obj", L"Assets/Bici/Bici_albedo.jpg", L"Assets/Bici/Bici_specular_.jpg", L"Assets/Bici/bici_normal.png", 0, 0);
+
+		//TEXTO
+		tiempo = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
+		ganar = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
+		entrar = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
+		encuentra = new Text(d3dDevice, d3dContext, 3.6, 1.2, L"Assets/GUI/font.jpg", XMFLOAT4(0.76f, 0.76f, 0.76f, 1.0f)); // la ultima variable es el color
 
 	}
 
@@ -397,7 +404,6 @@ public:
 		camara->posCam3p.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 20;
 		camara->UpdateCam(vel, arriaba, izqder, tipoCam);
 
-
 		//COLLISION WALL
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, camara->posCam.x, 133.0))) {
 			camara->posCam = camara->posCampast;
@@ -408,11 +414,6 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, -252, camara->posCam.z))) {
 			camara->posCam = camara->posCampast;
 		}
-		/*if (isPointInsideSphere(camara->getpos(), getSphere2(5, camara->posCam.x, -100))) {
-			camara->posCam = camara->posCampast;
-		}*/
-		//COLLISIONS
-
 		if (entro)
 		{
 			if (camara->posCam.z < -87.0 && camara->posCam.z > -112.0) {
@@ -429,11 +430,6 @@ public:
 		}
 		
 		#pragma region COLLISIONS
-		
-		if (isPointInsideSphere(camara->getpos3(), getSphere2(5, 123.1, -24.9))) {
-			camara->posCam = camara->posCampast;
-
-		}//Tumba1
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 123.1, -24.9))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba1
@@ -488,15 +484,19 @@ public:
 				postierr = false;
 			}
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.9, 62.0))) {
+
+
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.5, 23.1))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba7
 		if (postierr == true && Pala == true) {
-			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 185.9, 62.0))) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 185.5, 23.1))) {
 				excavada[6] = true;
 				postierr = false;
 			}
 		}
+
+
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 216.9, 20.22))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba8
@@ -524,10 +524,15 @@ public:
 				postierr = false;
 			}
 		}
-
-
-
-
+		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.9, 62.0))) {
+			camara->posCam = camara->posCampast;
+		}//Tumba7
+		if (postierr == true && Pala == true) {
+			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 185.9, 62.0))) {
+				excavada[10] = true;
+				postierr = false;
+			}
+		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 215.3, 62.6))) {
 			camara->posCam = camara->posCampast;
 		}//Tumba12
@@ -583,9 +588,6 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 207.21, 103.3))) {
 			camara->posCam = camara->posCampast;
 		}
-		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 185.5, 23.1))) {
-			camara->posCam = camara->posCampast;
-		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, 211.6, -72.5))) {
 			camara->posCam = camara->posCampast;
 		}		
@@ -628,31 +630,33 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(5, -44.7, -83.7))) {
 			camara->posCam = camara->posCampast;
 		}
-#pragma endregion 
+		#pragma endregion 
 
 		//JUGABILIDAD
 		if (camara->posCam.z > -87.0) {
 			entro = true;
 		}
-		if (postierr == true) {
-			if (isPointInsideSphere(camara->getpos(), getSphere2(7, 255.5, 117.6))) {
+		if (isPointInsideSphere(camara->getpos(), getSphere2(7, 234.5, 114.6))) {
+				if (postierr == true) {	
 				Pala = true;
 				postierr = false;
 			}
 		}
-		if (postierr == true) {
-			if (isPointInsideSphere(camara->getpos(), getSphere2(8, 131.3, 114.10))) {
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -121.5, 116.8))) {
+			if (postierr == true) {	
+			Martillo = true;
+			postierr = false;
+			}	
+		}
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 6.21, -86.84))) {
+			if (postierr == true && Martillo == true) {
 				Martillo = true;
 				postierr = false;
+				entro = false;
+				victoria = true;
 			}
 		}
-		if (postierr == true && Martillo == true) {
-			if (isPointInsideSphere(camara->getpos(), getSphere2(8, 6.21, -86.84))) {
-				Martillo = true;
-				postierr = false;
-				entro =false;
-			}
-		}
+
 		skydome->Update(camara->vista, camara->proyeccion);
 
 		float camPosXZ[2] = { camara->posCam.x, camara->posCam.z };
@@ -660,7 +664,6 @@ public:
 		TurnOffDepth();
 		skydome->Render(camara->posCam);
 		TurnOnDepth();
-
 
 		bike->setPosX(camara->hdveo.x);
 		bike->setPosZ(camara->hdveo.z);
@@ -671,21 +674,301 @@ public:
 		terreno->Draw(camara->vista, camara->proyeccion);
 
 
-		//BILLBOARDS
+		//DIBUJAR EL TEXTO
 
-		esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
-			-11, -78, 4, 12, uv1, uv2, uv3, uv4, 1, false, 1.57);
+		tiempo->DrawText(-0.95, 0.95,"Tiempo: " +tiempo->Time(segundos), 0.015); // la ultima variable es espaciado entre las letras jsjsjs
+		
+		if (Pala != true && entro != false) {
+			encuentra->DrawText(-0.95, 0.8, "Busca algun objeto para excavar.", 0.015);
 
+		}
+		if (Pala == true && huesos == false) {
+			encuentra->DrawText(-0.5, 0.8, "Encuentra los huesos.", 0.015);
+		}
+		//bool victoria = false;
+
+		//tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
+
+
+		//if (victoria == true) {
+
+		//	tiempo->DrawText(0, 0, "Felicidades, has logrado escapar", 0.015);
+
+		//}
+
+		//if (segundos <= 0) { // este mensaje de derrota funciona, mas no para el timer
+
+		//	tiempo->DrawText(0, 0, "Derrota", 0.015);
+		//}
+
+
+
+		//DIBUJAR LOS BILLBOARDS
+		switch (tierraimp) {
+		case 1: 
+			if (huesos == false) {
+				if (excavada[0] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 112, -36))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				122, -36, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57); 
+				}
+			}
+			break;
+		case 2: 
+			if (huesos == false) {
+				if (excavada[1] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 154, -36))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				154, -36, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 3:
+			if (huesos == false) {
+				if (excavada[2] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 186, -36))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				186, -36, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 4: 
+			if (huesos == false) {
+				if (excavada[3] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 218, -36))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				218, -36, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 5:
+			if (huesos == false) {
+				if (excavada[4] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 112, 12))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				122, 12, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 6:
+			if (huesos == false) {
+				if (excavada[5] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 154, 12))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				154, 12, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57); 
+				}
+			}
+			break;
+		case 7:
+			if (huesos == false) {
+				if (excavada[6] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 186, 12))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				186, 12, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 8:
+			if (huesos == false) {
+				if (excavada[7] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 218, 12))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				218, 12, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+			}
+			}
+			break;
+		case 9:
+			if (huesos == false) {
+				if (excavada[8] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 112, 48))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				122, 48, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+			}
+			}
+			break;
+		case 10:if (huesos == false) {
+			if (excavada[9] == true && recoger == true) {
+				if (isPointInsideSphere(camara->getpos(), getSphere2(8, 154, 48))) {
+					huesos = true;
+					recoger = false;
+				}
+			}
+			if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				154, 48, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+			}
+		}
+			break;
+		case 11:
+			if (huesos == false) {
+				if (excavada[10] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 186, 48))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				186, 48, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 12:
+			if (huesos == false) {
+				if (excavada[11] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 218, 48))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				218, 48, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 13:
+			if (huesos == false) {
+				if (excavada[12] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 112, 80))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				122, 80, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 14:
+			if (huesos == false) {
+				if (excavada[13] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 154, 80))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+					esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+					154, 80, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 15: 
+			if (huesos == false) {
+				if (excavada[14] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 186, 80))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+				esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+				186, 80, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		case 16:
+			if (huesos == false) {
+				if (excavada[15] == true && recoger == true) {
+					if (isPointInsideSphere(camara->getpos(), getSphere2(8, 218, 80))) {
+						huesos = true;
+						recoger = false;
+					}
+				}
+				if (huesos == false) {
+					esqueleto->Draw(camara->vista, camara->proyeccion, camara->posCam,
+						218, 80, 5, 5.5, uv1, uv2, uv3, uv4, 1, false, 1.57);
+				}
+			}
+			break;
+		}
+		
+		if (huesos != false) {
+			entrar->DrawText(-0.95, 0.8, "Sal del cementerio.", 0.015);
+		}
 		hojas->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			110, -78, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');  
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 106, -76))) {
+			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
+			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
+
+			perdio = true;
+		}
 		hojas1->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-54.3, -58.2, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 211.6, -56.7))) {
+			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
+			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
+			perdio = true;
+		}
 		hojas2->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			79, 119, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 70.3, 113.3))) {
+			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
+			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
+			perdio = true;
+		}
 		hojas3->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			224, -55.1, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -63.4, -52.8))) {
+			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
+			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
+			perdio = true;
+		}
 		hojas4->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-106, -7.8, 5, 10, uv1, uv2, uv3, uv4, 1, false, 1.57, 'Z');
+		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -108.4, -10.5))) {
+			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
+			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
+			perdio = true;
+		}
 		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-100, -78, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');
 		arbol1->Draw(camara->vista, camara->proyeccion, camara->posCam,
@@ -702,16 +985,18 @@ public:
 			224, 26, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');
 		arbol7->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			-70, 95, 1, 40, uv1, uv2, uv3, uv4, 1, false, 0, 'A');
-		//AGUA
+
+		//DIBUJA EL AGUA
 		TurnOnAlphaBlending();
 		lago->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			185.5f, -71, 3.1, 30, uv1, uv2, uv3, uv4, 1.57, 'Z');
 		TurnOffAlphaBlending();
 
-		//MODELOS
+		//DIBUJAR LOS MODELOS
 		pared->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		puerta->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		if(entro == false) {
+			entrar->DrawText(-0.95, 0.8, "Entra al cementerio.", 0.015);
 			puertaA->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
 		else {
@@ -741,6 +1026,7 @@ public:
 		Iglesia->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		Casa->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
 		arbolseco->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 35.0f, 0, 'A', 1, false, tipoCam);
+		
 		//TIERRAS
 		if (excavada[0] == false) {
 			tierra[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
@@ -791,7 +1077,6 @@ public:
 			tierra[15]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1, false, tipoCam);
 		}
 
-		postierr = false;
 
 		swapChain->Present( 1, 0 );
 	}

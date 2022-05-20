@@ -48,6 +48,9 @@
     <ClInclude Include="GUI.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader.fx">
@@ -82,6 +85,12 @@
     </FxCompile>
     <FxCompile Include="Lago.hlsl">
       <Filter>Archivos de código fuente</Filter>
+    </FxCompile>
+    <FxCompile Include="Lamparas.hlsl">
+      <Filter>Archivos de código fuente</Filter>
+    </FxCompile>
+    <FxCompile Include="Text.fx">
+      <Filter>Archivos de encabezado</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

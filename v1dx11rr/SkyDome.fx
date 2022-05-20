@@ -45,6 +45,7 @@ PS_Input VS_Main(VS_Input vertex)
 
 float4 PS_Main(PS_Input pix) : SV_TARGET
 {
+
     float4 text1 = noche1.Sample(colorSampler, pix.tex0);
     float4 text2 = noche2.Sample(colorSampler, pix.tex0);
 	

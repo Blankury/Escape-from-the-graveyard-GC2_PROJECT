@@ -104,26 +104,8 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
         
     //Salida de color
     text = text * (AportAmb + AportLuzDif);
-    text.a = 0.1;
+    text.a = 0.0;
     return text;
     
 }
         
-
-
-	
-//float3 bump = normalize(2.0 * textnorm - 1);
-//    //float3 bumpnrm = normalize(mul(rotationMat, float4(bump, 1.0)));
-//float FALL = dot(bump, normalize(DirLuz));
-//float4 AportLuzDiff = saturate(dot(normalize(DirLuz), bumpnrm));
-
-//float4 diffinal = float4(1.0f, 1.0f, 1.0f, 1.0f);
-    
-//    //Salida de color
-//float4 AportLuzDif = saturate(LuzDifusa * FALL * FAD);
-
-//    text.a = 0.1;
-//    text = text * (AportAmb + AportLuzDif);
-
-//    return
-//text;
