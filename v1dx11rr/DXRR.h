@@ -140,6 +140,7 @@ public:
 		izqder = 0;
 		arriaba = 0;
 		billCargaFuego();
+
 		srand(time(NULL));
 		tierraimp = 1 + rand() % (16 - 1);
 
@@ -674,7 +675,7 @@ public:
 		}
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 6.21, -86.84))) {
 			if (postierr == true && Martillo == true) {
-				Martillo = true;
+				
 				postierr = false;
 				entro = false;
 				victoria = true;
@@ -699,7 +700,7 @@ public:
 		bike->setPosZ(camara->hdveo.z);
 		bike->Draw(camara->vista, camara->proyeccion,
 			terreno->Superficie(bike->getPosX(), bike->getPosZ()) + 2.5,
-			camara->posCam, 10.0f, rotCam + XM_PI, 'Y', 1, true, tipoCam);
+			camara->posCam, 20.0f, rotCam + XM_PI, 'Y', 1, true, tipoCam);
 
 		terreno->Draw(camara->vista, camara->proyeccion);
 
@@ -720,6 +721,7 @@ public:
 
 			tiempo->DrawText(0.9, 0, "Derrota", 0.015);
 			MessageBox(hWnd, L"Perdiste", L"Ah llegado un guardia", MB_OK);
+			PostQuitMessage(0);
 
 		}
 
@@ -971,7 +973,7 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 
-			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			MessageBox(hWnd, L"Perdiste", L"Caiste en un pozo.", MB_OK);
 			PostQuitMessage(0);
 
 		}
@@ -981,7 +983,7 @@ public:
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
 
-			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			MessageBox(hWnd, L"Perdiste", L"Caiste en un pozo.", MB_OK);
 			PostQuitMessage(0);
 
 
@@ -991,7 +993,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, 70.3, 113.3))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			MessageBox(hWnd, L"Perdiste", L"Caiste en un pozo.", MB_OK);
 			PostQuitMessage(0);
 
 		}
@@ -1000,7 +1002,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -63.4, -52.8))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			MessageBox(hWnd, L"Perdiste", L"Caiste en un pozo.", MB_OK);
 			PostQuitMessage(0);
 
 		}
@@ -1009,7 +1011,7 @@ public:
 		if (isPointInsideSphere(camara->getpos(), getSphere2(8, -108.4, -10.5))) {
 			tiempo->DrawText(-0.5, 0.5, "Caiste en un pozo.", 0.015);
 			tiempo->DrawText(-0.5, 0.2, " Has perdido.", 0.015);
-			MessageBox(hWnd, L"Perdiste", L"Perdiste", MB_OK);
+			MessageBox(hWnd, L"Perdiste", L"Caiste en un pozo.", MB_OK);
 			PostQuitMessage(0);
 
 		}
