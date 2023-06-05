@@ -1,1 +1,1 @@
-"# GC2_PROJECT" 
+Proyecto de Graficas computacionales 2 en C++ con DirectX
